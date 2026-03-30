@@ -1,0 +1,22 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    /* Light Mode (Zaytuna Olive & Clay) */
+    .bg { fill: #f7f8f2; }
+    .q-char { fill: #3e4a2e; font-family: sans-serif; font-weight: 700; font-size: 34px; }
+    .b-char { fill: #d2b48c; font-family: sans-serif; font-weight: 300; font-size: 34px; }
+
+    /* Dark Mode (Zaytuna Sage & Earth) */
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #1c1f16; }
+      .q-char { fill: #c5d1af; }
+      .b-char { fill: #4b3b2f; }
+    }
+  </style>
+  
+  <rect width="64" height="64" rx="14" class="bg" />
+  
+  <g transform="translate(12, 42)">
+    <text class="q-char" letter-spacing="-2">q</text>
+    <text x="20" class="b-char" letter-spacing="-2">b</text>
+  </g>
+</svg>

@@ -1,6 +1,11 @@
 <!-- BEGIN:nextjs-agent-rules -->
 # Agent Instructions: QuranBayan (Next.js 16)
 
+## Workflow & Deployment
+- **Pre-push Testing:** Before every push to the `develop` or `main` branches, the project MUST be tested locally using the `npx vercel dev` command.
+- **Validation:** Ensure all environment variables are loaded and the local build succeeds without console errors.
+- **Branching:** Work primarily in `develop`. Only merge to `main` once the local Vercel simulation is stable.
+
 You are an expert TypeScript developer assisting with the QuranBayan project. Follow these strict architectural guidelines:
 
 ## 1. Tech Stack & Versions
@@ -41,4 +46,10 @@ You are an expert TypeScript developer assisting with the QuranBayan project. Fo
 1. Use `Olive` for primary text and brand-heavy components (headers, active icons).
 2. Use `Clay` for call-to-action buttons, progress bars, and subtle borders.
 3. High-contrast reading mode must prioritize `Sage` text on `Dark Moss` backgrounds for dark mode to reduce OLED smear.
+
+## Content Architecture: Homepage
+- **Prioritize Legibility:** Arabic text must be at least 24px on mobile.
+- **Transliteration Integration:** The DIN 31635 output should be secondary but easily accessible (lowered opacity or italicized in Clay).
+- **Navigation:** Use a "Flat" hierarchy—no more than 2 clicks to reach any Ayah.
+- **Tone:** The interface should remain "Quiet"—avoid unnecessary animations or loud colors.
 <!-- END:nextjs-agent-rules -->
