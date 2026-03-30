@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Search, Book, Hash, MessageSquare } from 'lucide-react';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useTypewriter } from '@/hooks/useTypewriter';
+import { mockSurahs } from '@/lib/surahs';
 
 interface Suggestion {
   type: 'surah' | 'ayah' | 'keyword';
@@ -12,22 +13,6 @@ interface Suggestion {
   subtitle?: string;
   href: string;
 }
-
-const mockSurahs = [
-  { id: 1, name: "Al-Fatihah", aliases: ["The Opening", "Fatiha", "The Key"] },
-  { id: 2, name: "Al-Baqarah", aliases: ["The Cow", "Baqara", "Bakra"] },
-  { id: 3, name: "Ali 'Imran", aliases: ["The Family of Imran", "Amran", "Imran"] },
-  { id: 4, name: "An-Nisa", aliases: ["The Women", "Nisa"] },
-  { id: 5, name: "Al-Ma'idah", aliases: ["The Table", "Maida", "Jesus", "Isa", "Eesa"] },
-  { id: 18, name: "Al-Kahf", aliases: ["The Cave", "Kahf"] },
-  { id: 19, name: "Maryam", aliases: ["Mary", "Jesus", "Isa", "Eesa"] },
-  { id: 20, name: "Ta-Ha", aliases: ["Taha"] },
-  { id: 36, name: "Ya-Sin", aliases: ["Yasin", "Yaseen"] },
-  { id: 67, name: "Al-Mulk", aliases: ["The Kingdom", "Mulk", "Tabarak"] },
-  { id: 112, name: "Al-Ikhlas", aliases: ["The Sincerity", "Purity", "Tauheed", "Monotheism"] },
-  { id: 113, name: "Al-Falaq", aliases: ["The Daybreak", "Falaq"] },
-  { id: 114, name: "An-Nas", aliases: ["Mankind", "Nas"] },
-];
 
 /**
  * Smart SearchBar with Autocomplete.

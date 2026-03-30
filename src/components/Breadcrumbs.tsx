@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { mockSurahs } from '@/lib/surahs';
 
 /**
  * Dynamic Breadcrumbs component that uses the current path.
@@ -24,9 +25,11 @@ export default function Breadcrumbs() {
       let label = segment.charAt(0).toUpperCase() + segment.slice(1);
       label = label.replace(/-/g, ' ');
       
-      // Special handling for numeric IDs (like surah IDs) - could be improved with data
+      // Special handling for numeric IDs (like surah IDs) - now using shared data
       if (!isNaN(Number(segment))) {
-        label = `Surah ${segment}`;
+        const surahId = Number(segment);
+        const surah = mockSurahs.find(s => s.id === surahId);
+        label = surah ? surah.name : `Surah ${segment}`;
       }
       
       return { label, href };
