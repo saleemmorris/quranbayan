@@ -1,5 +1,5 @@
 import React from 'react';
-import { transliterate } from '@src/lib/transliterate.ts';
+import { transliterate } from '@src/lib/transliterate';
 
 interface AyahViewProps {
   arabicText: string;
