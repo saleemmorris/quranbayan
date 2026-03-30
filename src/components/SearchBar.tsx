@@ -47,8 +47,8 @@ export default function SearchBar({
     'Try 2:255...'
   ]);
 
-  const fullPlaceholder = placeholder || "Search Surah, Ayah (e.g., 2:255), or Keyword...";
-  const shortPlaceholder = typewriterText;
+  const fullPlaceholder = isHeader ? "Search" : (placeholder || "Search Surah, Ayah (e.g., 2:255), or Keyword...");
+  const shortPlaceholder = isHeader ? "Search" : typewriterText;
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -138,13 +138,13 @@ export default function SearchBar({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => setIsFocused(true)}
-            placeholder={isFocused ? "" : shortPlaceholder} 
+            placeholder={isFocused ? (isHeader ? "Search" : "") : shortPlaceholder} 
             className={`w-full rounded-full border border-brand-border bg-brand-card px-6 py-4 text-foreground shadow-sm focus:border-brand-clay focus:outline-none focus:ring-1 focus:ring-brand-clay transition-all pr-32 ${
               isHeader && !isFocused ? 'py-2 px-4 pr-10' : ''
             } ${!isHeader && isFocused ? 'py-5 px-8' : ''}`}
           />
           {/* Animated scrolling placeholder for focused state */}
-          {isFocused && query === "" && (
+          {isFocused && query === "" && !isHeader && (
             <div className="pointer-events-none absolute inset-y-0 left-6 right-32 flex items-center overflow-hidden">
               <span className="animate-marquee inline-block text-foreground/50 text-sm md:text-base">
                 {fullPlaceholder}
