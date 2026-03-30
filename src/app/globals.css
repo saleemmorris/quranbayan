@@ -10,20 +10,17 @@
   --color-border: #e2e4d8;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Zaytuna Dark Mode */
-    --background: #1c1f16;    /* Dark Moss */
-    --foreground: #c5d1af;    /* Soft Sage */
-    --color-olive: #c5d1af;
-    --color-clay: #4b3b2f;    /* Earth/Terracotta */
-    --color-card: #25291c;
-    --color-border: #323828;
-  }
+.dark {
+  /* Zaytuna Dark Mode */
+  --background: #1c1f16;    /* Dark Moss */
+  --foreground: #c5d1af;    /* Soft Sage */
+  --color-olive: #c5d1af;
+  --color-clay: #4b3b2f;    /* Earth/Terracotta */
+  --color-card: #25291c;
+  --color-border: #323828;
 }
 
 @theme inline {
-  /* Link Tailwind variables to our custom CSS properties */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   
@@ -45,4 +42,10 @@ body {
   /* Use the Tailwind-defined sans font instead of hardcoded Arial */
   font-family: var(--font-sans), ui-sans-serif, system-ui;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button, 
+[role="button"],
+.cursor-pointer {
+  cursor: pointer !important;
 }

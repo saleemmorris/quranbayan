@@ -1,55 +1,46 @@
 <!-- BEGIN:nextjs-agent-rules -->
-# Agent Instructions: QuranBayan (Next.js 16)
+# Agent Instructions: QuranBayan (Next.js 16) - Learning Tool Pivot
 
-## Workflow & Deployment
-- **Pre-push Testing:** Before every push to the `develop` or `main` branches, the project MUST be tested locally using the `npx vercel dev` command.
-- **Validation:** Ensure all environment variables are loaded and the local build succeeds without console errors.
-- **Branching:** Work primarily in `develop`. Only merge to `main` once the local Vercel simulation is stable.
+## 1. Workflow & Deployment
+- **Pre-push Testing:** Before every push to `develop` or `main`, the project MUST be tested locally via `npx vercel dev`.
+- **Validation:** Verify environment variables; the local build must succeed without console errors.
+- **Branching Strategy:** - `develop`: Feature incubation and learning-tool refinements.
+  - `main`: Production-stable releases only. Merge only after Vercel local simulation is verified.
 
-You are an expert TypeScript developer assisting with the QuranBayan project. Follow these strict architectural guidelines:
-
-## 1. Tech Stack & Versions
+## 2. Tech Stack & Architecture
 - **Framework:** Next.js 16.2+ (App Router).
 - **Language:** TypeScript 5.x (Strict mode).
-- **Compiler:** React Compiler is ENABLED. Do not use `useMemo` or `useCallback` unless specifically requested for complex non-UI logic.
-- **Styling:** Tailwind CSS 4.0. Use logical properties (`ms-`, `me-`, `inline-`) for RTL/LTR compatibility.
+- **Compiler:** React Compiler ENABLED. Avoid `useMemo`/`useCallback` unless handling non-UI heavy computation.
+- **Styling:** Tailwind CSS 4.0. Prioritize logical properties (`ms-`, `me-`, `inline-`) for RTL-first layouts.
+- **Runtime:** API Route Handlers in `src/app/api/` must use **Edge Runtime**.
 
-## 2. File Structure
-- All source code lives in `src/`.
-- Use the `@/*` alias for all internal imports (e.g., `@/lib/transliterate`).
-- Backend logic must reside in `src/app/api/` as Route Handlers using the **Edge Runtime**.
+## 3. Educational & Linguistic Logic (The Learning Pivot)
+- **Word-Level Intelligence:** The UI must support "Word-by-Word" analysis. Every Ayah is a collection of interactive tokens.
+- **Data Source:** Use **Quran.com API (v4)**. Fetch `word_fields` including `text_uthmani`, `transliteration`, and `location`.
+- **Normalization:** Apply `.normalize('NFC')` to all Arabic strings before rendering.
+- **Fonts:** Arabic text MUST use `Amiri Quran` (min-size 24px).
+- **Transliteration:** Strictly follow **DIN 31635**. Transliterated text should be placed directly beneath its corresponding Arabic word in `Clay`.
+- **BiDi Control:** Use `dir="rtl"` for Arabic/Word containers and `dir="ltr"` for Analysis/English sections.
 
-## 3. Linguistic & Unicode Standards
-- **Normalization:** Always apply `.normalize('NFC')` to Arabic strings before processing.
-- **Fonts:** Use the `Amiri Quran` font for Arabic text.
-- **BiDi:** Use `dir="rtl"` for Arabic containers and `dir="ltr"` for English/Transliteration.
-- **Standard:** Follow DIN 31635 for transliteration mapping.
+### Linguistic Standards
+- **Word-Level Stacks:** Mandate a minimum `gap-y-3` between Arabic text and its transliteration to ensure no visual overlap of descenders; the Arabic word must have a `leading-[2.5]` to prevent clipping.
 
-## 4. Components
-- Prefer Server Components by default.
-- Use `"use client"` only for interactive elements (search inputs, audio players).
-- All components must be accessible (ARIA labels for Arabic text).
+## 4. Design System: Zaytuna (Olive & Clay)
+- **Palette:**
+  - **Olive (Primary):** Light `#3E4A2E` | Dark `#C5D1AF` (Sage)
+  - **Clay (Accent):** Light `#D2B48C` (Tan) | Dark `#4B3B2F` (Earth)
+  - **Backgrounds:** Light `#F7F8F2` (Parchment) | Dark `#1C1F16` (Dark Moss)
+- **Usage Rules:**
+  - `Olive`: Primary text, Surah titles, active learning states.
+  - `Clay`: Word-level transliteration, progress indicators, interactive highlights.
+  - Dark Mode: Prioritize `Sage` on `Dark Moss` for high-readability/low-smear.
 
-# Design System: Zaytuna (Olive & Clay)
-
-## Color Tokens
-- **Primary (Olive):** - Light: `#3E4A2E` (Olive Drab)
-  - Dark: `#C5D1AF` (Sage)
-- **Secondary (Clay):**
-  - Light: `#D2B48C` (Tan)
-  - Dark: `#4B3B2F` (Earth)
-- **Backgrounds:**
-  - Light Mode: `#F7F8F2` (Off-white/Parchment)
-  - Dark Mode: `#1C1F16` (Dark Moss/Deep Forest)
-
-## Implementation Rules
-1. Use `Olive` for primary text and brand-heavy components (headers, active icons).
-2. Use `Clay` for call-to-action buttons, progress bars, and subtle borders.
-3. High-contrast reading mode must prioritize `Sage` text on `Dark Moss` backgrounds for dark mode to reduce OLED smear.
-
-## Content Architecture: Homepage
-- **Prioritize Legibility:** Arabic text must be at least 24px on mobile.
-- **Transliteration Integration:** The DIN 31635 output should be secondary but easily accessible (lowered opacity or italicized in Clay).
-- **Navigation:** Use a "Flat" hierarchy—no more than 2 clicks to reach any Ayah.
-- **Tone:** The interface should remain "Quiet"—avoid unnecessary animations or loud colors.
+## 5. UI/UX Architecture: Learning Mode
+- **Icons:** NEVER use external `<link>` tags for icon fonts. Use an official/highly supported library for all UI icons to ensure SVG server-side rendering and tree-shaking. Size them using Tailwind `w-*` and `h-*` classes, and color them using `text-brand-*`.
+- **Quiet Interface:** Minimize distractions. Avoid loud colors or non-functional animations.
+- **Interactive Tokens:** Clicking an Arabic word triggers a "Root Analysis" drawer or tooltip.
+- **Navigation:** Maintain a "Flat" hierarchy. Maximum 2 clicks to reach any Ayah study view.
+- **Accessibility:** All Arabic tokens must have appropriate ARIA labels for screen readers.
+- **Study Toggles:** Provide UI switches to hide/show Arabic, Transliteration, or Translation independently for memorization testing.
+- **-Search Interactions:** All search inputs must utilize a "Smart Autocomplete" Command Palette pattern. Avoid manual category selectors; instead, auto-detect the user's intent (Surah name, Ayah coordinate like `2:255`, or Keyword) and categorize the dropdown results accordingly.
 <!-- END:nextjs-agent-rules -->

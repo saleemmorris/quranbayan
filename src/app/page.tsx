@@ -1,6 +1,8 @@
 import Header from "@/components/Header";
 import SurahCard from "@/components/SurahCard";
 import AyahView from "@/components/AyahView";
+import Link from "next/link";
+import SearchBar from "@/components/SearchBar";
 
 export default function Home() {
   const sampleSurahs = [
@@ -23,20 +25,11 @@ export default function Home() {
             Experience the <span className="text-brand-olive">Quran</span> with <span className="text-brand-clay">Clarity</span>
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-foreground/70">
-            A modern, focused reading experience with scholarly DIN 31635 transliteration and quiet design.
+            A modern, focused reading experience with clear word-by-word transliteration.
           </p>
           
-          <div className="mt-8 max-w-md">
-            <div className="relative">
-              <input 
-                type="text" 
-                placeholder="Search Surah, Ayah, or Keyword..." 
-                className="w-full rounded-full border border-brand-border bg-brand-card px-6 py-4 text-foreground shadow-sm focus:border-brand-clay focus:outline-none focus:ring-1 focus:ring-brand-clay transition-all"
-              />
-              <button className="absolute right-2 top-2 rounded-full bg-brand-olive px-6 py-2 text-sm font-semibold text-white hover:opacity-90 transition-opacity">
-                Search
-              </button>
-            </div>
+          <div className="mt-8 w-full">
+            <SearchBar />
           </div>
         </section>
 
@@ -46,7 +39,7 @@ export default function Home() {
             Ayah of the Day
           </h2>
           <div className="rounded-2xl border border-brand-border bg-brand-card p-2 shadow-sm">
-            <AyahView arabicText="بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ" />
+            <AyahView verseKey="1:1" />
           </div>
         </section>
 
@@ -54,7 +47,12 @@ export default function Home() {
         <section>
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-2xl font-bold text-foreground">Explore Surahs</h2>
-            <button className="text-sm font-medium text-brand-olive hover:underline">View All</button>
+            <Link 
+              href="/surah" 
+              className="text-sm font-medium text-brand-olive hover:underline"
+            >
+              View All
+            </Link>
           </div>
           
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -73,7 +71,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-brand-border py-8 text-center">
         <p className="text-sm text-foreground/50">
-          © {new Date().getFullYear()} quranbayan.org. Built for reflection.
+          © {new Date().getFullYear()} quranbayan.org. 
         </p>
       </footer>
     </div>

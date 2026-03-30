@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Amiri } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "next-themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,7 +21,7 @@ const amiri = Amiri({
 
 export const metadata: Metadata = {
   title: "quranbayan.org | Clear Insight",
-  description: "A modern Quran experience with DIN 31635 transliteration and scholarly insight.",
+  description: "A modern Quran experience with clear word-by-word transliteration and deep reflection.",
   icons: {
     icon: [
       { url: "/images/logo/logo-square.svg", type: "image/svg+xml" },
@@ -43,7 +44,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-brand-clay/30">
-        {children}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

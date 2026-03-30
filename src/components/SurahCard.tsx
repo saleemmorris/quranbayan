@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 interface SurahCardProps {
   number: number;
@@ -9,24 +10,28 @@ interface SurahCardProps {
 /**
  * SurahCard component displaying the Surah number, Arabic name, and English name.
  * Uses Zaytuna (Olive & Clay) color tokens and Tailwind 4.0.
+ * Links to the dynamic surah analysis page.
  */
 export default function SurahCard({ number, arabicName, englishName }: SurahCardProps) {
   return (
-    <div className="bg-brand-card border border-brand-border p-4 rounded-lg flex items-center gap-4 transition-colors">
-      <div className="flex items-center justify-center min-w-10 h-10 rounded-full bg-brand-clay text-white font-bold">
+    <Link 
+      href={`/surah/${number}`}
+      className="group bg-brand-card border border-brand-border p-5 rounded-2xl flex items-center gap-5 transition-all duration-300 hover:border-brand-clay/40 hover:shadow-md hover:bg-white"
+    >
+      <div className="flex items-center justify-center min-w-12 h-12 rounded-full bg-brand-clay/10 text-brand-clay font-bold transition-colors group-hover:bg-brand-olive group-hover:text-white">
         {number}
       </div>
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 overflow-hidden">
         <span 
-          className="text-brand-olive font-amiri text-2xl" 
+          className="text-brand-olive font-amiri text-2xl truncate transition-colors group-hover:text-brand-olive" 
           dir="rtl"
         >
           {arabicName.normalize('NFC')}
         </span>
-        <span className="text-foreground text-sm">
+        <span className="text-foreground/60 text-sm font-medium transition-colors group-hover:text-foreground">
           {englishName}
         </span>
       </div>
-    </div>
+    </Link>
   );
 }
