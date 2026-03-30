@@ -49,3 +49,16 @@ button,
 .cursor-pointer {
   cursor: pointer !important;
 }
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 15s linear infinite;
+  padding-left: 100%; /* Start from the right side */
+}
+
