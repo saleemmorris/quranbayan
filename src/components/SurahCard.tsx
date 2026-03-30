@@ -17,7 +17,7 @@ export default function SurahCard({ number, arabicName, englishName, formalName 
   return (
     <Link 
       href={`/surah/${number}`}
-      className="group bg-brand-card border border-brand-border p-5 rounded-2xl flex items-center gap-5 transition-all duration-300 hover:border-brand-clay/40 hover:shadow-md hover:bg-white"
+      className="group bg-brand-card border border-brand-border p-5 rounded-2xl flex items-center gap-5 transition-all duration-300 hover:border-brand-clay/40 hover:shadow-md hover:brightness-105"
     >
       <div className="flex items-center justify-center min-w-12 h-12 rounded-full bg-brand-clay/10 text-brand-clay font-bold transition-colors group-hover:bg-brand-olive group-hover:text-white">
         {number}

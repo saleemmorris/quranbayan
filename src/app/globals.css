@@ -3,19 +3,19 @@
 :root {
   /* Zaytuna Light Mode */
   --background: #f7f8f2;      /* Parchment/Off-white */
-  --foreground: #3e4a2e;      /* Olive Drab */
-  --color-olive: #3e4a2e;
-  --color-clay: #d2b48c;      /* Tan Clay */
+  --foreground: #2d3622;      /* Slightly darker Olive for better contrast */
+  --color-olive: #3e4a2e;     /* Primary Olive */
+  --color-clay: #8b6d43;      /* Darker Tan for readability of small text */
   --color-card: #ffffff;
   --color-border: #e2e4d8;
 }
 
 .dark {
   /* Zaytuna Dark Mode */
-  --background: #1c1f16;    /* Dark Moss */
-  --foreground: #c5d1af;    /* Soft Sage */
-  --color-olive: #c5d1af;
-  --color-clay: #4b3b2f;    /* Earth/Terracotta */
+  --background: #1c1f16;      /* Dark Moss */
+  --foreground: #dae6c2;      /* Lighter Sage for clarity */
+  --color-olive: #dae6c2;     /* Matches foreground in dark mode for clarity */
+  --color-clay: #d2b48c;      /* Light Tan/Clay for high contrast on dark background */
   --color-card: #25291c;
   --color-border: #323828;
 }
