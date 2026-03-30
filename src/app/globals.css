@@ -1,26 +1,47 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Zaytuna Light Mode */
+  --background: #f7f8f2;      /* Parchment/Off-white */
+  --foreground: #3e4a2e;      /* Olive Drab */
+  --color-olive: #3e4a2e;
+  --color-clay: #d2b48c;      /* Tan Clay */
+  --color-card: #ffffff;
+  --color-border: #e2e4d8;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Zaytuna Dark Mode */
+    --background: #1c1f16;    /* Dark Moss */
+    --foreground: #c5d1af;    /* Soft Sage */
+    --color-olive: #c5d1af;
+    --color-clay: #4b3b2f;    /* Earth/Terracotta */
+    --color-card: #25291c;
+    --color-border: #323828;
   }
+}
+
+@theme inline {
+  /* Link Tailwind variables to our custom CSS properties */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  /* Custom Brand Colors for use in utility classes */
+  --color-brand-olive: var(--color-olive);
+  --color-brand-clay: var(--color-clay);
+  --color-brand-card: var(--color-card);
+  --color-brand-border: var(--color-border);
+
+  /* Keep your Geist fonts */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Use the Tailwind-defined sans font instead of hardcoded Arial */
+  font-family: var(--font-sans), ui-sans-serif, system-ui;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

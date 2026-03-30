@@ -24,4 +24,21 @@ You are an expert TypeScript developer assisting with the QuranBayan project. Fo
 - Prefer Server Components by default.
 - Use `"use client"` only for interactive elements (search inputs, audio players).
 - All components must be accessible (ARIA labels for Arabic text).
+
+# Design System: Zaytuna (Olive & Clay)
+
+## Color Tokens
+- **Primary (Olive):** - Light: `#3E4A2E` (Olive Drab)
+  - Dark: `#C5D1AF` (Sage)
+- **Secondary (Clay):**
+  - Light: `#D2B48C` (Tan)
+  - Dark: `#4B3B2F` (Earth)
+- **Backgrounds:**
+  - Light Mode: `#F7F8F2` (Off-white/Parchment)
+  - Dark Mode: `#1C1F16` (Dark Moss/Deep Forest)
+
+## Implementation Rules
+1. Use `Olive` for primary text and brand-heavy components (headers, active icons).
+2. Use `Clay` for call-to-action buttons, progress bars, and subtle borders.
+3. High-contrast reading mode must prioritize `Sage` text on `Dark Moss` backgrounds for dark mode to reduce OLED smear.
 <!-- END:nextjs-agent-rules -->
