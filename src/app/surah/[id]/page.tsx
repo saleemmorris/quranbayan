@@ -34,7 +34,7 @@ interface SurahData {
 async function getSurahData(id: string): Promise<SurahData> {
   const [chapterRes, versesRes] = await Promise.all([
     fetch(`https://api.quran.com/api/v4/chapters/${id}?language=en`),
-    fetch(`https://api.quran.com/api/v4/verses/by_chapter/${id}?words=true&word_fields=text_uthmani,transliteration,location`)
+    fetch(`https://api.quran.com/api/v4/verses/by_chapter/${id}?words=true&word_fields=text_uthmani,transliteration,location&per_page=all`)
   ]);
 
   if (!chapterRes.ok || !versesRes.ok) {
@@ -46,7 +46,7 @@ async function getSurahData(id: string): Promise<SurahData> {
 
   return {
     chapter: chapterData.chapter,
-    verses: versesData.verses as Verse[]
+    verses: (versesData.verses || []) as Verse[]
   };
 }
 
