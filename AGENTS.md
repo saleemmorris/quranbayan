@@ -43,4 +43,10 @@
 - **Accessibility:** All Arabic tokens must have appropriate ARIA labels for screen readers.
 - **Study Toggles:** Provide UI switches to hide/show Arabic, Transliteration, or Translation independently for memorization testing.
 - **-Search Interactions:** All search inputs must utilize a "Smart Autocomplete" Command Palette pattern. Avoid manual category selectors; instead, auto-detect the user's intent (Surah name, Ayah coordinate like `2:255`, or Keyword) and categorize the dropdown results accordingly.
+## 6. Security Posture
+- **XSS Prevention:** Strictly forbid the use of `dangerouslySetInnerHTML`. All user-generated or external content must be sanitized or rendered using React's default escaping.
+- **Input Validation:** Mandate the use of **Zod** for all API input validation and environment variable schema enforcement.
+- **API Protection:** All new API routes must include rate-limiting logic to prevent abuse.
+- **HTTP Headers:** Maintain strict security headers (CSP, HSTS, X-Frame-Options, etc.) as configured in `next.config.ts` and `middleware.ts`.
+
 <!-- END:nextjs-agent-rules -->
