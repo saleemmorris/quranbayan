@@ -40,3 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# AI Agent & Local Configs
+AGENTS.md
+GEMINI.md
+CLAUDE.md
+.geminiignore
