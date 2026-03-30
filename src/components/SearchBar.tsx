@@ -62,7 +62,10 @@ export default function SearchBar({
     }
 
     const newSuggestions: Suggestion[] = [];
-    const lowerQuery = debouncedQuery.toLowerCase();
+    const lowerQuery = debouncedQuery.toLowerCase().trim();
+    
+    // Support "surah maryam" or "s maryam" by stripping the prefix
+    const searchTerm = lowerQuery.replace(/^(surah|s)\s+/, '');
 
     // 1. Check for 'Jump to Ayah' (regex matching \d+:\d+)
     const ayahMatch = debouncedQuery.match(/^(\d+):(\d+)$/);
@@ -77,13 +80,17 @@ export default function SearchBar({
 
     // 2. Check for 'Jump to Surah'
     const surahMatches = mockSurahs.filter(s => {
-      const canonicalMatch = s.name.toLowerCase().includes(lowerQuery) || s.id.toString() === debouncedQuery;
-      const aliasMatch = s.aliases?.some(alias => alias.toLowerCase().includes(lowerQuery));
+      const name = s.name.toLowerCase();
+      const idStr = s.id.toString();
+      
+      const canonicalMatch = name.includes(searchTerm) || idStr === searchTerm;
+      const aliasMatch = s.aliases?.some(alias => alias.toLowerCase().includes(searchTerm));
+      
       return canonicalMatch || aliasMatch;
     });
 
-    surahMatches.forEach(s => {
-      const matchingAlias = s.aliases?.find(alias => alias.toLowerCase().includes(lowerQuery));
+    surahMatches.slice(0, 8).forEach(s => {
+      const matchingAlias = s.aliases?.find(alias => alias.toLowerCase().includes(searchTerm));
       
       newSuggestions.push({
         type: 'surah',

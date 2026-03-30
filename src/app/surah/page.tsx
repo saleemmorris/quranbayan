@@ -50,6 +50,7 @@ export default async function AllSurahsPage() {
               number={chapter.id}
               arabicName={chapter.name_arabic}
               englishName={chapter.translated_name.name}
+              formalName={chapter.name_complex}
             />
           ))}
         </div>

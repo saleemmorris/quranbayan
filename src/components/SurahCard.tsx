@@ -5,6 +5,7 @@ interface SurahCardProps {
   number: number;
   arabicName: string;
   englishName: string;
+  formalName?: string;
 }
 
 /**
@@ -12,7 +13,7 @@ interface SurahCardProps {
  * Uses Zaytuna (Olive & Clay) color tokens and Tailwind 4.0.
  * Links to the dynamic surah analysis page.
  */
-export default function SurahCard({ number, arabicName, englishName }: SurahCardProps) {
+export default function SurahCard({ number, arabicName, englishName, formalName }: SurahCardProps) {
   return (
     <Link 
       href={`/surah/${number}`}
@@ -28,9 +29,16 @@ export default function SurahCard({ number, arabicName, englishName }: SurahCard
         >
           {arabicName.normalize('NFC')}
         </span>
-        <span className="text-foreground/60 text-sm font-medium transition-colors group-hover:text-foreground">
-          {englishName}
-        </span>
+        <div className="flex flex-col">
+          <span className="text-foreground/80 text-sm font-bold transition-colors group-hover:text-foreground">
+            {formalName || englishName}
+          </span>
+          {formalName && (
+            <span className="text-foreground/50 text-xs transition-colors group-hover:text-foreground/70">
+              {englishName}
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   );

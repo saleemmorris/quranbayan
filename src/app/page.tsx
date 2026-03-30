@@ -6,12 +6,12 @@ import SearchBar from "@/components/SearchBar";
 
 export default function Home() {
   const sampleSurahs = [
-    { number: 1, arabic: "الفاتحة", english: "The Opening" },
-    { number: 2, arabic: "البقرة", english: "The Cow" },
-    { number: 3, arabic: "آل عمران", english: "The Family of Imran" },
-    { number: 4, arabic: "النساء", english: "The Women" },
-    { number: 18, arabic: "الكهف", english: "The Cave" },
-    { number: 36, arabic: "يس", english: "Ya-Sin" },
+    { number: 1, arabic: "الفاتحة", english: "The Opening", formal: "Al-Fatihah" },
+    { number: 2, arabic: "البقرة", english: "The Cow", formal: "Al-Baqarah" },
+    { number: 3, arabic: "آل عمران", english: "The Family of Imran", formal: "Ali 'Imran" },
+    { number: 4, arabic: "النساء", english: "The Women", formal: "An-Nisa" },
+    { number: 18, arabic: "الكهف", english: "The Cave", formal: "Al-Kahf" },
+    { number: 36, arabic: "يس", english: "Ya-Sin", formal: "Ya-Sin" },
   ];
 
   return (
@@ -62,6 +62,7 @@ export default function Home() {
                 number={surah.number}
                 arabicName={surah.arabic}
                 englishName={surah.english}
+                formalName={surah.formal}
               />
             ))}
           </div>
