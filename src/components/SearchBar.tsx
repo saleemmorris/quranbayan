@@ -140,8 +140,8 @@ export default function SearchBar({
             onFocus={() => setIsFocused(true)}
             placeholder={isFocused ? (isHeader ? "Search" : "") : shortPlaceholder} 
             className={`w-full rounded-full border border-brand-border bg-brand-card px-6 py-4 text-foreground shadow-sm focus:border-brand-clay focus:outline-none focus:ring-1 focus:ring-brand-clay transition-all pr-32 ${
-              isHeader && !isFocused ? 'py-2 px-4 pr-10' : ''
-            } ${!isHeader && isFocused ? 'py-5 px-8' : ''}`}
+              isHeader && !isFocused ? 'py-2 px-4 pr-10 placeholder:text-transparent sm:placeholder:text-foreground/50' : ''
+            } ${isHeader && isFocused ? 'placeholder:text-transparent sm:placeholder:text-foreground/50' : ''} ${!isHeader && isFocused ? 'py-5 px-8' : ''}`}
           />
           {/* Animated scrolling placeholder for focused state */}
           {isFocused && query === "" && !isHeader && (
