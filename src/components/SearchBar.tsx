@@ -14,12 +14,19 @@ interface Suggestion {
 }
 
 const mockSurahs = [
-  { id: 1, name: "Al-Fatihah" },
-  { id: 2, name: "Al-Baqarah" },
-  { id: 18, name: "Al-Kahf" },
-  { id: 36, name: "Ya-Sin" },
-  { id: 67, name: "Al-Mulk" },
-  { id: 114, name: "An-Nas" },
+  { id: 1, name: "Al-Fatihah", aliases: ["The Opening", "Fatiha", "The Key"] },
+  { id: 2, name: "Al-Baqarah", aliases: ["The Cow", "Baqara", "Bakra"] },
+  { id: 3, name: "Ali 'Imran", aliases: ["The Family of Imran", "Amran", "Imran"] },
+  { id: 4, name: "An-Nisa", aliases: ["The Women", "Nisa"] },
+  { id: 5, name: "Al-Ma'idah", aliases: ["The Table", "Maida", "Jesus", "Isa", "Eesa"] },
+  { id: 18, name: "Al-Kahf", aliases: ["The Cave", "Kahf"] },
+  { id: 19, name: "Maryam", aliases: ["Mary", "Jesus", "Isa", "Eesa"] },
+  { id: 20, name: "Ta-Ha", aliases: ["Taha"] },
+  { id: 36, name: "Ya-Sin", aliases: ["Yasin", "Yaseen"] },
+  { id: 67, name: "Al-Mulk", aliases: ["The Kingdom", "Mulk", "Tabarak"] },
+  { id: 112, name: "Al-Ikhlas", aliases: ["The Sincerity", "Purity", "Tauheed", "Monotheism"] },
+  { id: 113, name: "Al-Falaq", aliases: ["The Daybreak", "Falaq"] },
+  { id: 114, name: "An-Nas", aliases: ["Mankind", "Nas"] },
 ];
 
 /**
@@ -84,15 +91,19 @@ export default function SearchBar({
     }
 
     // 2. Check for 'Jump to Surah'
-    const surahMatches = mockSurahs.filter(s => 
-      s.name.toLowerCase().includes(lowerQuery) || 
-      s.id.toString() === debouncedQuery
-    );
+    const surahMatches = mockSurahs.filter(s => {
+      const canonicalMatch = s.name.toLowerCase().includes(lowerQuery) || s.id.toString() === debouncedQuery;
+      const aliasMatch = s.aliases?.some(alias => alias.toLowerCase().includes(lowerQuery));
+      return canonicalMatch || aliasMatch;
+    });
+
     surahMatches.forEach(s => {
+      const matchingAlias = s.aliases?.find(alias => alias.toLowerCase().includes(lowerQuery));
+      
       newSuggestions.push({
         type: 'surah',
         title: s.name,
-        subtitle: `Surah #${s.id}`,
+        subtitle: matchingAlias ? `Surah #${s.id} (Matches "${matchingAlias}")` : `Surah #${s.id}`,
         href: `/surah/${s.id}`
       });
     });
