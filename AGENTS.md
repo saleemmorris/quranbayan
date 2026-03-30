@@ -49,4 +49,10 @@
 - **API Protection:** All new API routes must include rate-limiting logic to prevent abuse.
 - **HTTP Headers:** Maintain strict security headers (CSP, HSTS, X-Frame-Options, etc.) as configured in `next.config.ts` and `middleware.ts`.
 
+## 7. SEO Standards
+- **Metadata:** All dynamic routes must export a `generateMetadata` function to ensure unique titles, descriptions, and OpenGraph tags.
+- **Semantic HTML:** Use proper semantic tags (`<h1-h6>`, `<article>`, `<section>`, `<nav>`) to ensure content hierarchy is clear to search engines.
+- **Structured Data:** Use the `JsonLd` component to provide Schema.org structured data (e.g., BreadcrumbList, Article) where appropriate.
+- **Crawling:** Maintain `sitemap.ts` and `robots.ts` to guide search engine indexing.
+
 <!-- END:nextjs-agent-rules -->
