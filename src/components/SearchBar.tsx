@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, Book, Hash, MessageSquare } from 'lucide-react';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useTypewriter } from '@/hooks/useTypewriter';
 
 interface Suggestion {
   type: 'surah' | 'ayah' | 'keyword';
@@ -40,8 +41,14 @@ export default function SearchBar({
   const router = useRouter();
   const searchRef = useRef<HTMLDivElement>(null);
 
+  const typewriterText = useTypewriter([
+    'Search Surah...',
+    'Search Ayah...',
+    'Try 2:255...'
+  ]);
+
   const fullPlaceholder = placeholder || "Search Surah, Ayah (e.g., 2:255), or Keyword...";
-  const shortPlaceholder = "Search...";
+  const shortPlaceholder = typewriterText;
 
   // Close dropdown when clicking outside
   useEffect(() => {
