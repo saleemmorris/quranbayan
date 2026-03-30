@@ -138,11 +138,11 @@ export default function SearchBar({
         <button 
           type="submit"
           className={`absolute right-2 flex items-center gap-2 rounded-full bg-brand-olive text-sm font-semibold text-white hover:opacity-90 transition-opacity cursor-pointer ${
-            isHeader && !isFocused ? 'p-2' : 'px-6 py-3 top-1/2 -translate-y-1/2 mr-1'
+            isHeader && !isFocused ? 'p-2' : 'p-2 sm:px-6 sm:py-3 top-1/2 -translate-y-1/2 mr-1'
           }`}
         >
           <Search className="h-4 w-4" strokeWidth={2.5} />
-          <span className={isHeader && !isFocused ? 'hidden' : 'inline'}>Search</span>
+          <span className={isHeader && !isFocused ? 'hidden' : 'hidden sm:inline'}>Search</span>
         </button>
       </form>
 
