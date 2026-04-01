@@ -108,10 +108,11 @@
     - `NotAllowedError`: User gesture required (should be fixed by `onClick` handler).
 
 ## 15. Local Troubleshooting (Diagnostic Tool)
-- **Route:** Access `/debug-audio` to run local connectivity tests.
+- **Route:** Access `/debug-audio` to run local connectivity tests. **[RESTRICTED TO DEVELOP BRANCH ONLY]**
 - **Tests:**
     - **Test Path:** Uses `fetch(path, { method: 'HEAD' })` to verify file existence on the server/disk.
     - **Force Play:** Bypasses all application logic to test raw browser audio playback.
+- **Merge Constraint:** This route and its associated page must NEVER be merged into `main` or deployed to production.
 - **Interpreting Results:**
     - **404:** The file is physically missing from `public/audio/words/` or the build didn't include it.
     - **DOMException / NotAllowedError:** The browser is blocking audio due to lack of user interaction (`userActivation.isActive` is FALSE).
