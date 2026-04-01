@@ -35,6 +35,7 @@ export default function AyahView({ verseKey = "1:1", arabicText }: AyahViewProps
     word: string;
     transliteration: string;
     location: string;
+    wordId?: number;
   } | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 

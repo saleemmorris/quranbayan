@@ -44,6 +44,7 @@ export default function SurahStudyView({ chapter, verses }: SurahStudyViewProps)
     word: string;
     transliteration: string;
     location: string;
+    wordId?: number;
   } | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
