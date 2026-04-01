@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import WordAnalysis from './WordAnalysis';
 import '@testing-library/jest-dom';
 
@@ -9,6 +9,11 @@ global.fetch = jest.fn();
 describe('WordAnalysis Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    global.open = jest.fn();
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it('should render Functional Particle when root is missing', async () => {
@@ -72,7 +77,13 @@ describe('WordAnalysis Component', () => {
       expect(screen.getByText(/Click for full lexicon analysis/i)).toBeInTheDocument();
     });
     
-    expect(screen.getByRole('button', { name: /Click for full lexicon analysis/i })).toBeInTheDocument();
+    const lexiconButton = screen.getByRole('button', { name: /Click for full lexicon analysis/i });
+    fireEvent.click(lexiconButton);
+
+    expect(global.open).toHaveBeenCalledWith(
+      'https://corpus.quran.com/wordbyword.jsp?chapter=1&verse=1#(1:1:1)',
+      '_blank'
+    );
   });
 
   it('should render RootDisplay when root is present', async () => {
