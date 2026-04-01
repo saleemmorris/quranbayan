@@ -59,7 +59,8 @@ export default function AyahView({ verseKey = "1:1", arabicText }: AyahViewProps
     setSelectedWord({
       word: word.text_uthmani,
       transliteration: word.transliteration?.text || '...',
-      location: word.location
+      location: word.location,
+      wordId: word.id
     });
     setIsDrawerOpen(true);
   };

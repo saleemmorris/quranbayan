@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { X, Loader2 } from 'lucide-react';
+import { X } from 'lucide-react';
 import TajweedText from './TajweedText';
+import TajweedPlayer from './TajweedPlayer';
 
 interface WordAnalysis {
   word: string;
   transliteration: string;
   location: string;
+  wordId?: number;
   root?: string;
   meaning?: string;
 }
@@ -75,23 +77,47 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
       <div className="flex flex-wrap gap-2">
         {description.split(',').map((segment, idx) => {
           const trimmed = segment.trim();
-          let colorClass = "text-foreground/60 bg-foreground/5";
+          let colorStyle = { color: 'rgba(0,0,0,0.6)', backgroundColor: 'rgba(0,0,0,0.05)', borderColor: 'transparent' };
           
           if (trimmed.toLowerCase().includes('noun')) {
-            colorClass = "text-brand-olive bg-brand-olive/10 border-brand-olive/20";
+            colorStyle = { color: '#3E4A2E', backgroundColor: 'rgba(62, 74, 46, 0.1)', borderColor: 'rgba(62, 74, 46, 0.2)' };
           } else if (trimmed.toLowerCase().includes('verb')) {
-            colorClass = "text-brand-clay bg-brand-clay/10 border-brand-clay/20";
+            colorStyle = { color: '#D2B48C', backgroundColor: 'rgba(210, 180, 140, 0.1)', borderColor: 'rgba(210, 180, 140, 0.2)' };
           }
           
           return (
             <span 
               key={idx} 
-              className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${colorClass}`}
+              style={colorStyle}
+              className="rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider"
             >
               {trimmed}
             </span>
           );
         })}
+      </div>
+    );
+  };
+
+  const renderRootDisplay = (root?: string) => {
+    if (!root) return null;
+    
+    // Split root into individual letters (e.g. "ب س م" -> ["ب", "س", "م"])
+    const letters = root.split(' ').filter(l => l.trim().length > 0);
+    
+    return (
+      <div className="flex flex-col items-center gap-6 border-b border-brand-border/50 pb-8">
+        <span className="text-xs font-bold uppercase tracking-widest text-brand-clay/60">3-Letter Root</span>
+        <div className="flex gap-8" dir="rtl">
+          {letters.map((letter, idx) => (
+            <div key={idx} className="flex flex-col items-center gap-3">
+              <span className="font-amiri text-5xl font-bold" style={{ fontSize: '48px', color: '#3E4A2E' }}>
+                {letter}
+              </span>
+              <TajweedPlayer soundName={letter} />
+            </div>
+          ))}
+        </div>
       </div>
     );
   };
@@ -138,22 +164,15 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
             <div className="mt-16 space-y-12">
               <section>
                 <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-brand-olive/60">Grammar & Root</h3>
-                <div className="rounded-2xl border border-brand-border bg-brand-card/30 p-6 min-h-[120px] flex flex-col justify-center">
+                <div className={`rounded-2xl border border-brand-border bg-brand-card/30 p-6 min-h-[160px] flex flex-col justify-center transition-all duration-300 ${loading ? 'animate-pulse bg-brand-border/10' : ''}`}>
                   {loading ? (
-                    <div className="flex items-center justify-center gap-2 text-brand-olive/40">
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                      <span className="text-sm font-medium">Analyzing morphology...</span>
+                    <div className="flex flex-col items-center justify-center gap-4">
+                      <div className="h-12 w-32 bg-brand-border/20 rounded-lg animate-shimmer" />
+                      <div className="h-4 w-48 bg-brand-border/20 rounded-full animate-shimmer" />
                     </div>
                   ) : wordInfo ? (
                     <div className="space-y-6">
-                      {wordInfo.root_modern && (
-                        <div className="flex flex-col items-center gap-2 border-b border-brand-border/50 pb-4">
-                          <span className="text-xs font-bold uppercase tracking-tighter text-brand-clay/60">Modern Arabic Root</span>
-                          <span className="font-amiri text-5xl text-brand-olive" dir="rtl">
-                            {wordInfo.root_modern}
-                          </span>
-                        </div>
-                      )}
+                      {renderRootDisplay(wordInfo.root_modern)}
                       <div className="space-y-3">
                         <span className="text-[10px] font-bold uppercase tracking-widest text-foreground/30">Linguistic Breakdown</span>
                         {renderGrammarSegments(wordInfo.grammar_description)}
@@ -169,14 +188,14 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
 
               <section>
                 <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-brand-olive/60">English Meaning</h3>
-                <div className="rounded-2xl border border-brand-border bg-brand-card/30 p-6">
-                  <p className="text-2xl font-medium text-foreground">
-                    {loading ? (
-                      <span className="opacity-20 animate-pulse">Loading translation...</span>
-                    ) : (
-                      wordInfo?.translation?.text || analysis.meaning || "Click for full lexicon analysis."
-                    )}
-                  </p>
+                <div className={`rounded-2xl border border-brand-border bg-brand-card/30 p-6 transition-all duration-300 ${loading ? 'animate-pulse bg-brand-border/10' : ''}`}>
+                  {loading ? (
+                    <div className="h-8 w-full bg-brand-border/20 rounded animate-shimmer" />
+                  ) : (
+                    <p className="text-2xl font-medium text-foreground">
+                      {wordInfo?.translation?.text || analysis.meaning || "Click for full lexicon analysis."}
+                    </p>
+                  )}
                 </div>
               </section>
             </div>

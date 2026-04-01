@@ -51,7 +51,8 @@ export default function SurahStudyView({ chapter, verses }: SurahStudyViewProps)
     setSelectedWord({
       word: word.text_uthmani,
       transliteration: word.transliteration?.text || '...',
-      location: word.location
+      location: word.location,
+      wordId: word.id
     });
     setIsDrawerOpen(true);
   };
