@@ -22,6 +22,7 @@ const LETTER_MAP: Record<string, string> = {
   'ر': '10_raa',
   'ز': '11_zaa',
   'س': '12_seen',
+  'sh': '13_sheen',
   'ش': '13_sheen',
   'ص': '14_saad',
   'ض': '15_daad',
@@ -39,17 +40,14 @@ const LETTER_MAP: Record<string, string> = {
   'و': '27_waw',
   'ي': '30_yaa',
   'ى': '30_yaa',
-  'ة': '26_haah', // Usually haa sound at end of word/pause
+  'ة': '26_haah',
   'لا': '29_laaa',
 };
 
-// Vowels (Harakat)
-const FATHAH = '\u064E';
-const DAMMAH = '\u064F';
-const KASRAH = '\u0650';
-const SUKUN = '\u0652';
+// Arabic Unicode Constants
 const SHADDA = '\u0651';
 const MADDAH = '\u0653';
+const ALIF_MADDAH = '\u0622';
 
 /**
  * Identifies letters followed by vowels and returns an array of audio filenames.
@@ -58,25 +56,30 @@ const MADDAH = '\u0653';
 export function getPhoneticSequence(arabicText: string): string[] {
   if (!arabicText) return [];
 
-  // Normalize and split into components (letter + modifiers)
-  const normalized = arabicText.normalize('NFC');
+  let text = arabicText.normalize('NFC');
+  
+  // Replace 'لا' with a unique internal symbol to avoid it being split
+  // Using a private use area character or just a placeholder
+  const LAAM_ALIF_PLACEHOLDER = '\uE000';
+  text = text.replace(/لا/g, LAAM_ALIF_PLACEHOLDER);
+
   const sequence: string[] = [];
   
-  // Regex to match a letter followed by its harakat/modifiers
-  // [^\u064B-\u065F] matches base characters
-  // [\u064B-\u065F]* matches following harakat
-  const unitRegex = /([^\u064B-\u065F]|[\u0621-\u064A])([\u064B-\u065F]*)/g;
+  // Tokenize into units (Letter + its Harakat)
+  // Base characters: \u0621-\u064A, \u0622, and our placeholder
+  const unitRegex = /([\u0621-\u064A\u0622\uE000])([\u064B-\u065F]*)/g;
   
   let match;
-  while ((match = unitRegex.exec(normalized)) !== null) {
+  while ((match = unitRegex.exec(text)) !== null) {
     const letter = match[1];
     const modifiers = match[2];
     
-    // Check for special Laam-Alif case
-    let filename = LETTER_MAP[letter];
-    
-    if (letter === 'ل' && modifiers.includes('ا')) {
+    let filename: string | undefined;
+
+    if (letter === LAAM_ALIF_PLACEHOLDER) {
       filename = LETTER_MAP['لا'];
+    } else {
+      filename = LETTER_MAP[letter];
     }
 
     if (!filename) continue;
@@ -90,16 +93,13 @@ export function getPhoneticSequence(arabicText: string): string[] {
     }
 
     // Handle Madd (Lengthening)
-    // Madd can be explicit Maddah symbol or a letter like Alif/Waw/Yaa acting as a carrier
-    if (modifiers.includes(MADDAH)) {
-      // Add an extra instance of the letter for lengthening
-      sequence.push(filename);
+    // Maddah only doubles if it's NOT part of the Laam-Alif special filename already
+    if (letter !== LAAM_ALIF_PLACEHOLDER) {
+      const isMadd = letter === ALIF_MADDAH || modifiers.includes(MADDAH);
+      if (isMadd) {
+        sequence.push(filename);
+      }
     }
-    
-    // Handle vowel combinations that might imply Madd (lengthening)
-    // In this context, if it's a letter followed by a vowel, we've already added the letter.
-    // If we want to strictly follow "identify letters followed by vowels", 
-    // we already have the filenames.
   }
 
   return sequence;
