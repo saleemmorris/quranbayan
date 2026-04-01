@@ -18,7 +18,7 @@ export default function NavSidebar({ isOpen, onClose }: NavSidebarProps) {
     <>
       {/* Backdrop */}
       <div 
-        className={`fixed inset-0 z-[60] bg-black/20 backdrop-blur-[2px] transition-opacity duration-300 cursor-pointer ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity duration-300 cursor-pointer ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={onClose}
       />
 
@@ -38,13 +38,13 @@ export default function NavSidebar({ isOpen, onClose }: NavSidebarProps) {
             </button>
           </header>
 
-          <nav className="mt-8 flex-1 rounded-2xl bg-brand-clay/5 p-4 shadow-inner">
+          <nav className="mt-8 flex-1 rounded-2xl bg-brand-clay/20 p-4 shadow-inner border border-brand-clay/30">
             <ul className="space-y-2">
               <li>
                 <Link 
                   href="/surah" 
                   onClick={onClose}
-                  className="flex items-center gap-4 rounded-xl px-4 py-3 text-foreground transition-colors hover:bg-brand-clay/10 hover:text-brand-olive group"
+                  className="flex items-center gap-4 rounded-xl px-4 py-3 text-foreground transition-colors hover:bg-brand-clay/25 hover:text-brand-olive group"
                 >
                   <Book className="h-5 w-5 text-brand-clay group-hover:text-brand-olive" />
                   <span className="font-semibold">Explore Surahs</span>
@@ -54,7 +54,7 @@ export default function NavSidebar({ isOpen, onClose }: NavSidebarProps) {
                 <Link 
                   href="/pronunciation-guide" 
                   onClick={onClose}
-                  className="flex items-center gap-4 rounded-xl px-4 py-3 text-foreground transition-colors hover:bg-brand-clay/10 hover:text-brand-olive group"
+                  className="flex items-center gap-4 rounded-xl px-4 py-3 text-foreground transition-colors hover:bg-brand-clay/25 hover:text-brand-olive group"
                 >
                   <HelpCircle className="h-5 w-5 text-brand-clay group-hover:text-brand-olive" />
                   <span className="font-semibold">Pronunciation Guide</span>
@@ -64,7 +64,7 @@ export default function NavSidebar({ isOpen, onClose }: NavSidebarProps) {
                 <Link 
                   href="/help-to-read" 
                   onClick={onClose}
-                  className="flex items-center gap-4 rounded-xl px-4 py-3 text-foreground transition-colors hover:bg-brand-clay/10 hover:text-brand-olive group"
+                  className="flex items-center gap-4 rounded-xl px-4 py-3 text-foreground transition-colors hover:bg-brand-clay/25 hover:text-brand-olive group"
                 >
                   <HelpCircle className="h-5 w-5 text-brand-clay group-hover:text-brand-olive" />
                   <span className="font-semibold">Help to Read</span>

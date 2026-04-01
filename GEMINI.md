@@ -20,22 +20,30 @@
 - **Transliteration:** Strictly follow **DIN 31635**. Transliteration is placed directly beneath its corresponding Arabic word in `Clay`.
 
 ## 4. Design System: Zaytuna (Olive & Clay)
-- **Palette:**
-  - **Olive (Primary):** Light `#3E4A2E` | Dark `#C5D1AF` (Sage)
-  - **Clay (Accent):** Light `#D2B48C` (Tan) | Dark `#4B3B2F` (Earth)
-  - **Madd Blue:** `#2196F3`
+- **Palette (Current CSS):**
   - **Backgrounds:** Light `#F7F8F2` (Parchment) | Dark `#1C1F16` (Dark Moss)
+  - **Foregrounds:** Light `#3E4A2E` (Olive) | Dark `#C5D1AF` (Sage)
+  - **Olive (Primary):** Light `#3E4A2E` | Dark `#C5D1AF` (Sage)
+  - **Clay (Accent):** Light `#7A5C33` (Deep Tan) | Dark `#E5D3B3` (Light Sand)
+  - **Cards:** Light `#FFFFFF` | Dark `#25291C` (Moss Card)
+  - **Borders:** Light `#E2E4D8` | Dark `#323828`
+- **Tajweed Specifics:**
+  - **Madd Blue:** `#2196F3`
+  - **Ghunnah:** `#3E4A2E` (Olive)
+  - **Qalqalah:** `#D2B48C` (Classic Clay)
 - **Usage Rules:**
-  - `Olive`: Primary text, Surah titles, active learning states, and Ghunnah highlighting.
-  - `Clay`: Word-level transliteration, progress indicators, and Qalqalah tokens.
+  - `Olive`: Primary text, Surah titles, active learning states.
+  - `Clay`: Word-level transliteration, progress indicators, and accent borders.
 
 ## 5. UI/UX Architecture: Learning Mode
 - **Icons:** Use React-supported SVG libraries (e.g., Lucide-React). No external `<link>` tags.
 - **Interactive Tokens:** Clicking an Arabic word triggers a "Root Analysis" drawer or tooltip.
-- **Navigation:** Burger Menu replaces top-level "Surahs" link. Contains:
-    1. Surah Index
-    2. Pronunciation Guide (`/pronunciation-guide`)
-    3. Help to Read (`/help-to-read`)
+- **Navigation (Header & Sidebar):**
+    - **Background:** MUST have a distinct background (`bg-background` or specific brand color) with a border to ensure separation from main content.
+    - Burger Menu replaces top-level "Surahs" link. Contains:
+        1. Surah Index
+        2. Pronunciation Guide (`/pronunciation-guide`)
+        3. Help to Read (`/help-to-read`)
 - **Search:** utilize "Smart Autocomplete" Command Palette. Auto-detect Surah name, `2:255`, or Keyword.
 
 ## 6. Security Posture
