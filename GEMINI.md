@@ -107,11 +107,21 @@
     - `403 (Forbidden)`: CSP or Permission issue.
     - `NotAllowedError`: User gesture required (should be fixed by `onClick` handler).
 
-## 15. Build-Step & Asset Management
+## 15. Local Troubleshooting (Diagnostic Tool)
+- **Route:** Access `/debug-audio` to run local connectivity tests.
+- **Tests:**
+    - **Test Path:** Uses `fetch(path, { method: 'HEAD' })` to verify file existence on the server/disk.
+    - **Force Play:** Bypasses all application logic to test raw browser audio playback.
+- **Interpreting Results:**
+    - **404:** The file is physically missing from `public/audio/words/` or the build didn't include it.
+    - **DOMException / NotAllowedError:** The browser is blocking audio due to lack of user interaction (`userActivation.isActive` is FALSE).
+    - **Status 200 + No Sound:** Possible codec issue or silent file.
+
+## 16. Build-Step & Asset Management
 - **Automation:** Use `scripts/download-makharij.js` (or manual ZIP) to populate `/public/audio/tajweed/`.
 - **Prebuild:** Ensure `package.json` includes `prebuild` scripts if assets are being fetched dynamically.
 
-## 16. Next.js 16.2+ & React 19 Protocols
+## 17. Next.js 16.2+ & React 19 Protocols
 - **Component Defaults:** Default to **Server Components**. Move `'use client'` to the lowest possible "leaf" components.
 - **Streaming:** Implement **Streaming with Suspense** for API-heavy data (e.g., Root Analysis).
 - **Data Fetching:** Use **Async Server Components**. Leverage native `fetch` caching. 
