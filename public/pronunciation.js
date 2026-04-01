@@ -1,89 +1,87 @@
 /**
- * pronunciation.js - quranbayan.org
- * Handles phonetic highlighting and sound playback for Arabic transliteration.
+ * tajweed-engine.js - quranbayan.org
+ * Handles Tajweed phonetic highlighting and sound playback.
  */
 
 (function() {
-  const phoneticMap = {
-    'th': '/audio/letters/tha.mp3',
-    'kh': '/audio/letters/kha.mp3',
-    'gh': '/audio/letters/ghayn.mp3',
-    'sh': '/audio/letters/sheen.mp3',
-    'dh': '/audio/letters/dhal.mp3',
-    'aa': '/audio/letters/alif.mp3',
-    'ee': '/audio/letters/ya.mp3',
-    'uu': '/audio/letters/waw.mp3',
-    'ṣ': '/audio/letters/sad.mp3',
-    'ḍ': '/audio/letters/dad.mp3',
-    'ṭ': '/audio/letters/tah.mp3',
-    'ẓ': '/audio/letters/zah.mp3',
-    'ḥ': '/audio/letters/hah.mp3',
-    'ʿ': '/audio/letters/ayn.mp3',
-    'q': '/audio/letters/qaf.mp3'
-  };
+  const tajweedRules = [
+    // Madd (Long Vowels)
+    { pattern: 'ā', sound: 'aa-long', type: 'madd' },
+    { pattern: 'ī', sound: 'ee-long', type: 'madd' },
+    { pattern: 'ū', sound: 'uu-long', type: 'madd' },
+    
+    // Heavy/Deep Letters
+    { pattern: 'ḥ', sound: 'hah-deep', type: 'heavy' },
+    { pattern: 'ṣ', sound: 'sad-heavy', type: 'heavy' },
+    { pattern: 'ḍ', sound: 'dad-heavy', type: 'heavy' },
+    { pattern: 'ṭ', sound: 'tah-heavy', type: 'heavy' },
+    { pattern: 'ẓ', sound: 'zah-heavy', type: 'heavy' },
+    { pattern: 'ʿ', sound: 'ayn-deep', type: 'heavy' },
+    
+    // Ghunnah (Nasalization)
+    { pattern: 'nn', sound: 'ghunnah-n', type: 'ghunnah' },
+    { pattern: 'mm', sound: 'ghunnah-m', type: 'ghunnah' },
+    
+    // Qalqalah (Echo) - Simple end-of-syllable or end-of-word check
+    { pattern: 'q', sound: 'qalqalah-q', type: 'qalqalah' },
+    { pattern: 't', sound: 'qalqalah-t', type: 'qalqalah' },
+    { pattern: 'b', sound: 'qalqalah-b', type: 'qalqalah' },
+    { pattern: 'j', sound: 'qalqalah-j', type: 'qalqalah' },
+    { pattern: 'd', sound: 'qalqalah-d', type: 'qalqalah' },
+  ];
 
-  // Sort keys by length descending to match 'kh' before 'k'
-  const patterns = Object.keys(phoneticMap).sort((a, b) => b.length - a.length);
+  // Sort by pattern length descending
+  const sortedRules = [...tajweedRules].sort((a, b) => b.pattern.length - a.length);
 
   /**
-   * Plays a sound using Web Audio API
+   * Plays sound from /assets/audio/tajweed/
    */
-  async function playPhonetic(text) {
-    const path = phoneticMap[text.toLowerCase()];
-    if (!path) return;
-
+  async function playSound(soundName) {
+    const path = `/assets/audio/tajweed/${soundName}.mp3`;
     try {
       const audio = new Audio(path);
       await audio.play();
     } catch (err) {
-      console.error('Audio playback failed:', err);
+      console.warn(`Audio not found: ${path}`);
     }
   }
 
   /**
-   * Scans elements and wraps patterns
+   * Tokenizes and injects spans into transliteration elements.
    */
-  function applyPhoneticHighlighting(container) {
-    const elements = container.querySelectorAll('.transliteration:not([data-phonetic-processed])');
+  function applyTajweedHighlighting(container) {
+    const elements = container.querySelectorAll('.transliteration:not([data-tajweed-processed])');
     
     elements.forEach(el => {
-      let html = el.innerHTML;
-      
-      // Prevent multiple processing
-      el.setAttribute('data-phonetic-processed', 'true');
+      el.setAttribute('data-tajweed-processed', 'true');
+      let text = el.textContent;
+      let html = text;
 
-      patterns.forEach(pattern => {
-        // Use a regex that ignores case and ensures we don't wrap already wrapped tags
-        const regex = new RegExp(`(?<!<[^>]*)${pattern}`, 'gi');
-        html = html.replace(regex, (match) => {
-          return `<span class="phonetic-trigger" data-phonetic="${pattern}">${match}</span>`;
-        });
+      // Single pass replacement using regex to avoid nested issues
+      const combinedRegex = new RegExp(`(${sortedRules.map(r => r.pattern).join('|')})`, 'gi');
+      
+      html = text.replace(combinedRegex, (match) => {
+        const rule = sortedRules.find(r => r.pattern === match.toLowerCase());
+        if (!rule) return match;
+        
+        return `<span class="tajweed-trigger tajweed-${rule.type}" data-sound="${rule.sound}">${match}</span>`;
       });
 
       el.innerHTML = html;
     });
   }
 
-  // Global event listener for phonetic triggers
+  // Global Click Listener
   document.addEventListener('click', (e) => {
-    const trigger = e.target.closest('.phonetic-trigger');
+    const trigger = e.target.closest('.tajweed-trigger');
     if (trigger) {
-      const phonetic = trigger.getAttribute('data-phonetic');
-      playPhonetic(phonetic);
+      const sound = trigger.getAttribute('data-sound');
+      playSound(sound);
     }
   });
 
-  // Initial application
-  applyPhoneticHighlighting(document.body);
-
-  // Watch for dynamic content changes (Next.js transitions)
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach(mutation => {
-      if (mutation.addedNodes.length) {
-        applyPhoneticHighlighting(document.body);
-      }
-    });
-  });
-
+  // Initial and dynamic processing
+  applyTajweedHighlighting(document.body);
+  const observer = new MutationObserver(() => applyTajweedHighlighting(document.body));
   observer.observe(document.body, { childList: true, subtree: true });
 })();

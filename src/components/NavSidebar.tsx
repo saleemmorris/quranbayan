@@ -52,25 +52,23 @@ export default function NavSidebar({ isOpen, onClose }: NavSidebarProps) {
               </li>
               <li>
                 <Link 
-                  href="/how-to-read" 
+                  href="/pronunciation-guide" 
                   onClick={onClose}
                   className="flex items-center gap-4 rounded-xl px-4 py-3 text-foreground transition-colors hover:bg-brand-clay/10 hover:text-brand-olive group"
                 >
                   <HelpCircle className="h-5 w-5 text-brand-clay group-hover:text-brand-olive" />
-                  <span className="font-semibold">How to Read Guide</span>
+                  <span className="font-semibold">Pronunciation Guide</span>
                 </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => {
-                    // Logic for settings can be added later
-                    onClose();
-                  }}
-                  className="flex w-full items-center gap-4 rounded-xl px-4 py-3 text-left text-foreground transition-colors hover:bg-brand-clay/10 hover:text-brand-olive group"
+                <Link 
+                  href="/help-to-read" 
+                  onClick={onClose}
+                  className="flex items-center gap-4 rounded-xl px-4 py-3 text-foreground transition-colors hover:bg-brand-clay/10 hover:text-brand-olive group"
                 >
-                  <SettingsIcon className="h-5 w-5 text-brand-clay group-hover:text-brand-olive" />
-                  <span className="font-semibold">Settings</span>
-                </button>
+                  <HelpCircle className="h-5 w-5 text-brand-clay group-hover:text-brand-olive" />
+                  <span className="font-semibold">Help to Read</span>
+                </Link>
               </li>
             </ul>
           </nav>
