@@ -1,50 +1,58 @@
 import React from 'react';
 import Header from "@/components/Header";
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
-import PlaySoundButton from '@/components/PlaySoundButton';
+import { ArrowLeft, MapPin } from 'lucide-react';
+import TajweedPlayer from '@/components/TajweedPlayer';
 
 interface ArabicLetter {
   letter: string;
   transliteration: string;
-  rule: string;
+  makhraj: string;
   sound: string;
 }
 
 const ARABIC_LETTERS: ArabicLetter[] = [
-  { letter: 'ا', transliteration: 'ā / \'', rule: 'Madd (Long Vowel)', sound: 'alif' },
-  { letter: 'ب', transliteration: 'b', rule: 'Qalqalah (Echo)', sound: 'ba' },
-  { letter: 'ت', transliteration: 't', rule: 'Qalqalah (Echo)', sound: 'ta' },
-  { letter: 'ث', transliteration: 'th', rule: 'Soft', sound: 'tha' },
-  { letter: 'ج', transliteration: 'j', rule: 'Qalqalah (Echo)', sound: 'jeem' },
-  { letter: 'ح', transliteration: 'ḥ', rule: 'Heavy / Deep', sound: 'hah-deep' },
-  { letter: 'خ', transliteration: 'kh', rule: 'Heavy / Deep', sound: 'kha' },
-  { letter: 'د', transliteration: 'd', rule: 'Qalqalah (Echo)', sound: 'dal' },
-  { letter: 'ذ', transliteration: 'dh', rule: 'Soft', sound: 'dhal' },
-  { letter: 'ر', transliteration: 'r', rule: 'Rolling', sound: 'ra' },
-  { letter: 'ز', transliteration: 'z', rule: 'Whistling', sound: 'zay' },
-  { letter: 'س', transliteration: 's', rule: 'Whistling', sound: 'seen' },
-  { letter: 'ش', transliteration: 'sh', rule: 'Spreading', sound: 'sheen' },
-  { letter: 'ص', transliteration: 'ṣ', rule: 'Heavy / Whistling', sound: 'sad-heavy' },
-  { letter: 'ض', transliteration: 'ḍ', rule: 'Heavy / Deep', sound: 'dad-heavy' },
-  { letter: 'ط', transliteration: 'ṭ', rule: 'Heavy / Qalqalah', sound: 'tah-heavy' },
-  { letter: 'ظ', transliteration: 'ẓ', rule: 'Heavy / Deep', sound: 'zah-heavy' },
-  { letter: 'ع', transliteration: 'ʿ', rule: 'Heavy / Deep', sound: 'ayn-deep' },
-  { letter: 'غ', transliteration: 'gh', rule: 'Heavy / Deep', sound: 'ghayn' },
-  { letter: 'ف', transliteration: 'f', rule: 'Soft', sound: 'fa' },
-  { letter: 'ق', transliteration: 'q', rule: 'Heavy / Qalqalah', sound: 'qaf' },
-  { letter: 'ك', transliteration: 'k', rule: 'Thin', sound: 'kaf' },
-  { letter: 'ل', transliteration: 'l', rule: 'Thin', sound: 'lam' },
-  { letter: 'م', transliteration: 'm', rule: 'Ghunnah (if doubled)', sound: 'meem' },
-  { letter: 'ن', transliteration: 'n', rule: 'Ghunnah (if doubled)', sound: 'noon' },
-  { letter: 'ه', transliteration: 'h', rule: 'Deep', sound: 'ha' },
-  { letter: 'و', transliteration: 'w / ū', rule: 'Madd (Long Vowel)', sound: 'waw' },
-  { letter: 'ي', transliteration: 'y / ī', rule: 'Madd (Long Vowel)', sound: 'ya' },
+  { letter: 'ا', transliteration: 'ā', makhraj: 'Empty space in mouth/throat', sound: 'alif' },
+  { letter: 'ب', transliteration: 'b', makhraj: 'Inside of lips', sound: 'ba' },
+  { letter: 'ت', transliteration: 't', makhraj: 'Tip of tongue/roots of upper teeth', sound: 'ta' },
+  { letter: 'ث', transliteration: 'th', makhraj: 'Tip of tongue/edges of upper teeth', sound: 'tha' },
+  { letter: 'ج', transliteration: 'j', makhraj: 'Middle of tongue/roof of mouth', sound: 'jeem' },
+  { letter: 'ح', transliteration: 'ḥ', makhraj: 'Middle of throat', sound: 'hah-deep' },
+  { letter: 'خ', transliteration: 'kh', makhraj: 'Top of throat', sound: 'kha' },
+  { letter: 'د', transliteration: 'd', makhraj: 'Tip of tongue/roots of upper teeth', sound: 'dal' },
+  { letter: 'ذ', transliteration: 'dh', makhraj: 'Tip of tongue/edges of upper teeth', sound: 'dhal' },
+  { letter: 'ر', transliteration: 'r', makhraj: 'Tip of tongue/gums of upper teeth', sound: 'ra' },
+  { letter: 'ز', transliteration: 'z', makhraj: 'Tip of tongue/edges of lower teeth', sound: 'zay' },
+  { letter: 'س', transliteration: 's', makhraj: 'Tip of tongue/edges of lower teeth', sound: 'seen' },
+  { letter: 'ش', transliteration: 'sh', makhraj: 'Middle of tongue/roof of mouth', sound: 'sheen' },
+  { letter: 'ص', transliteration: 'ṣ', makhraj: 'Tip of tongue/edges of lower teeth', sound: 'sad-heavy' },
+  { letter: 'ض', transliteration: 'ḍ', makhraj: 'Side of tongue/upper molars', sound: 'dad-heavy' },
+  { letter: 'ط', transliteration: 'ṭ', makhraj: 'Tip of tongue/roots of upper teeth', sound: 'tah-heavy' },
+  { letter: 'ظ', transliteration: 'ẓ', makhraj: 'Tip of tongue/edges of upper teeth', sound: 'zah-heavy' },
+  { letter: 'ع', transliteration: 'ʿ', makhraj: 'Middle of throat', sound: 'ayn-deep' },
+  { letter: 'غ', transliteration: 'gh', makhraj: 'Top of throat', sound: 'ghayn' },
+  { letter: 'ف', transliteration: 'f', makhraj: 'Bottom lip/edges of upper teeth', sound: 'fa' },
+  { letter: 'ق', transliteration: 'q', makhraj: 'Deepest part of tongue/soft palate', sound: 'qaf' },
+  { letter: 'ك', transliteration: 'k', makhraj: 'Back of tongue/hard palate', sound: 'kaf' },
+  { letter: 'ل', transliteration: 'l', makhraj: 'Edge of tongue/upper gums', sound: 'lam' },
+  { letter: 'م', transliteration: 'm', makhraj: 'Outer part of lips', sound: 'meem' },
+  { letter: 'ن', transliteration: 'n', makhraj: 'Tip of tongue/upper gums', sound: 'noon' },
+  { letter: 'ه', transliteration: 'h', makhraj: 'Deepest part of throat', sound: 'ha' },
+  { letter: 'و', transliteration: 'w', makhraj: 'Rounding of the lips', sound: 'waw' },
+  { letter: 'ي', transliteration: 'y', makhraj: 'Middle of tongue/roof of mouth', sound: 'ya' },
+];
+
+const MAKHRAJ_GROUPS = [
+  { title: 'Al-Jawf (The Empty Space)', letters: 'ا, و, ي', description: 'The empty space inside the mouth and throat.' },
+  { title: 'Al-Halq (The Throat)', letters: 'ء, هـ, ع, ح, غ, خ', description: 'Divided into three parts: deepest, middle, and closest parts of the throat.' },
+  { title: 'Al-Lisaan (The Tongue)', letters: 'ق, ك, ج, ش, ي, ض, ل, ن, ر, ط, د, ت, ص, ز, س, ظ, ذ, ث', description: 'The largest makhraj category, utilizing various parts of the tongue.' },
+  { title: 'Ash-Shafataan (The Lips)', letters: 'ف, و, ب, م', description: 'Sounds produced using the upper and lower lips.' },
+  { title: 'Al-Khayshum (The Nasal Passage)', letters: 'Ghunnah', description: 'The point of origin for nasalization sounds (Ghunnah).' },
 ];
 
 export const metadata = {
   title: 'Pronunciation Guide - QuranBayan',
-  description: 'Master Arabic pronunciation and Tajweed rules with our interactive guide.',
+  description: 'Learn the correct makhraj and pronunciation of Arabic letters.',
 };
 
 export default function PronunciationGuidePage() {
@@ -68,49 +76,56 @@ export default function PronunciationGuidePage() {
             Pronunciation <span className="text-brand-olive">Guide</span>
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-foreground/70">
-            A comprehensive reference for Arabic letters, transliteration patterns, and fundamental Tajweed rules.
+            A comprehensive guide to the Arabic alphabet, DIN 31635 transliteration, and points of articulation (Makharij).
           </p>
         </header>
 
-        <div className="overflow-hidden rounded-2xl border border-brand-border bg-brand-card shadow-sm">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-brand-border bg-brand-olive/5 text-sm font-bold uppercase tracking-widest text-brand-olive">
-                  <th className="px-6 py-4">Letter</th>
-                  <th className="px-6 py-4">Transliteration</th>
-                  <th className="px-6 py-4">Tajweed Rule</th>
-                  <th className="px-6 py-4">Listen</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-brand-border">
-                {ARABIC_LETTERS.map((item, index) => (
-                  <tr key={index} className="transition-colors hover:bg-brand-olive/[0.02]">
-                    <td className="px-6 py-6 font-amiri text-4xl text-brand-olive">
-                      {item.letter}
-                    </td>
-                    <td className="px-6 py-6 font-mono text-lg font-medium text-brand-clay">
-                      {item.transliteration}
-                    </td>
-                    <td className="px-6 py-6">
-                      <span className="inline-flex rounded-full bg-brand-clay/10 px-3 py-1 text-xs font-bold text-brand-clay uppercase tracking-wider">
-                        {item.rule}
-                      </span>
-                    </td>
-                    <td className="px-6 py-6">
-                      <PlaySoundButton soundName={item.sound} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {/* Makharij Overview */}
+        <section className="mb-16">
+          <h2 className="mb-8 text-2xl font-bold text-foreground flex items-center gap-3">
+            <MapPin className="h-6 w-6 text-brand-clay" />
+            Points of Articulation (Makharij)
+          </h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {MAKHRAJ_GROUPS.map((group, index) => (
+              <div key={index} className="rounded-2xl border border-brand-border bg-brand-card/50 p-6 shadow-sm transition-all hover:shadow-md">
+                <h3 className="text-lg font-bold text-brand-olive">{group.title}</h3>
+                <p className="mt-2 text-sm font-bold text-brand-clay">{group.letters}</p>
+                <p className="mt-4 text-sm text-foreground/70 leading-relaxed">{group.description}</p>
+              </div>
+            ))}
           </div>
-        </div>
+        </section>
+
+        {/* Alphabet Grid */}
+        <section>
+          <h2 className="mb-8 text-2xl font-bold text-foreground">Alphabet & Transliteration</h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {ARABIC_LETTERS.map((item, index) => (
+              <div key={index} className="group flex flex-col rounded-2xl border border-brand-border bg-brand-card p-6 transition-all duration-300 hover:border-brand-clay/40 hover:shadow-md">
+                <div className="flex items-center justify-between">
+                  <span className="font-amiri text-5xl font-bold text-brand-olive">{item.letter}</span>
+                  <TajweedPlayer soundName={item.sound} />
+                </div>
+                <div className="mt-6 flex flex-col gap-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold uppercase tracking-widest text-foreground/40">Transliteration</span>
+                    <span className="font-mono text-lg font-bold text-brand-clay">{item.transliteration}</span>
+                  </div>
+                  <div className="mt-4 border-t border-brand-border/50 pt-4">
+                    <span className="text-xs font-bold uppercase tracking-widest text-foreground/40 block mb-1">Makhraj</span>
+                    <p className="text-sm text-foreground/70 leading-snug">{item.makhraj}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
 
       <footer className="border-t border-brand-border py-12 text-center">
         <p className="text-sm text-foreground/50">
-          © {new Date().getFullYear()} quranbayan.org. Mastering the art of recitation.
+          © {new Date().getFullYear()} quranbayan.org. Learning the makharij of the Noble Quran.
         </p>
       </footer>
     </div>

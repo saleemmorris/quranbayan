@@ -84,11 +84,11 @@ button,
   color: #4CAF50 !important; /* Green */
 }
 
-.tajweed-heavy {
+.tajweed-qalqalah {
   color: #FF5722 !important; /* Orange */
 }
 
-.tajweed-qalqalah {
-  color: #9C27B0 !important; /* Purple (added for Qalqalah) */
+.tajweed-heavy {
+  color: #795548 !important; /* Brown */
 }
 

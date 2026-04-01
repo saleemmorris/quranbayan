@@ -37,8 +37,8 @@ const TAJWEED_RULES: TajweedRule[] = [
 const TAJWEED_COLORS = {
   madd: 'text-[#2196F3]',
   ghunnah: 'text-[#4CAF50]',
-  heavy: 'text-[#FF5722]',
-  qalqalah: 'text-[#9C27B0]',
+  qalqalah: 'text-[#FF5722]',
+  heavy: 'text-[#795548]', // Changed Heavy to Brown to avoid conflict with Qalqalah
 };
 
 /**
