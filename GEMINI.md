@@ -63,11 +63,20 @@
     - **Qalqalah (Echo):** `q, t, b, j, d` (syllable ends) -> Color: `#D2B48C`.
 - **Interactive Component:** Use `<TajweedPlayer />` (Client Component). Provide visual pulse and trigger audio on click.
 
-## 9. Build-Step & Asset Management
+## 9. Phonetic Builder & Utility
+- **Builder Logic:** Use `src/lib/phoneticBuilder.ts` to transform Arabic text into audio sequences.
+- **Function:** `getPhoneticSequence(arabicText: string): string[]` returns an array of filenames from `/public/audio/tajweed/`.
+- **Phonetic Handling:**
+    - **Regex:** Identify letters followed by Harakat (Fathah, Kasrah, Dammah, Sukun).
+    - **Shadda:** Double the corresponding letter's audio filename in the sequence.
+    - **Madd:** Lengthen the sequence by doubling the carrier letter or identifying Maddah symbols.
+- **Filenames:** Match the `1_alif` through `30_yaa` convention.
+
+## 10. Build-Step & Asset Management
 - **Automation:** Use `scripts/download-makharij.js` (or manual ZIP) to populate `/public/audio/tajweed/`.
 - **Prebuild:** Ensure `package.json` includes `prebuild` scripts if assets are being fetched dynamically.
 
-## 10. Next.js 16.2+ & React 19 Protocols
+## 11. Next.js 16.2+ & React 19 Protocols
 - **Component Defaults:** Default to **Server Components**. Move `'use client'` to the lowest possible "leaf" components.
 - **Streaming:** Implement **Streaming with Suspense** for API-heavy data (e.g., Root Analysis).
 - **Data Fetching:** Use **Async Server Components**. Leverage native `fetch` caching. 
