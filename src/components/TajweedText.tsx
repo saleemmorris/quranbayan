@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { PHONETIC_INDEX } from '@/constants/phoneticMap';
+import { CONSONANTS, VOWELS } from '@/constants/phoneticMap';
 
 /**
- * Phonetic Integration - TajweedText
- * Tokenizes DIN 31635 transliteration and links parts to audio assets.
+ * Structural Overhaul - TajweedText
+ * Supports Syllabic Mapping (Consonant + Vowel)
  */
 export default function TajweedText({ transliteration }: { transliteration: string }) {
   
@@ -14,14 +14,12 @@ export default function TajweedText({ transliteration }: { transliteration: stri
    * Regex: /([b-zḥḏʿġšṣḍṭẓʾ][āīūaiu]?|')/gi
    */
   const tokenizeTransliteration = (text: string): string[] => {
-    // Regex identifies letters followed by optional vowels, or a hamzah (')
     const regex = /([b-zḥḏʿġšṣḍṭẓʾ][āīūaiu]?|')/gi;
     const tokens: string[] = [];
     let match;
     let lastIndex = 0;
 
     while ((match = regex.exec(text)) !== null) {
-      // Add any non-matching characters before the current match as static text
       if (match.index > lastIndex) {
         tokens.push(text.substring(lastIndex, match.index));
       }
@@ -29,7 +27,6 @@ export default function TajweedText({ transliteration }: { transliteration: stri
       lastIndex = regex.lastIndex;
     }
 
-    // Add any trailing characters
     if (lastIndex < text.length) {
       tokens.push(text.substring(lastIndex));
     }
@@ -38,21 +35,36 @@ export default function TajweedText({ transliteration }: { transliteration: stri
   };
 
   /**
-   * Plays sound of a specific token from /audio/tajweed/
+   * Resolves the correct audio filename for a phonetic unit.
+   * Logic: ${consonant}${vowel}.mp3
    */
-  const playSound = (token: string) => {
-    const lowerToken = token.toLowerCase();
+  const getPhoneticFile = (unit: string): string | null => {
+    const lower = unit.toLowerCase();
     
-    // Check for special combined cases first (like 'la')
-    let filename = PHONETIC_INDEX[lowerToken];
+    // Check for explicit combined mapping if any (future expansion)
+    // Currently following consonant + vowel logic
+    const consonantPart = lower.charAt(0);
+    const vowelPart = lower.substring(1);
 
-    // If no direct token match, lookup by primary consonant or character
-    if (!filename) {
-      // Pick first character of token as fallback for consonants+vowels
-      const firstChar = lowerToken.charAt(0);
-      filename = PHONETIC_INDEX[firstChar];
+    const baseName = CONSONANTS[consonantPart];
+    if (!baseName) return null;
+
+    if (vowelPart) {
+      const vowelSuffix = VOWELS[vowelPart];
+      if (vowelSuffix) {
+        return `${baseName}${vowelSuffix}.mp3`;
+      }
     }
 
+    // Standalone consonant (Sukun or letter name)
+    return `${baseName}.mp3`;
+  };
+
+  /**
+   * Plays sound of a specific token from /audio/tajweed/
+   */
+  const playSound = (unit: string) => {
+    const filename = getPhoneticFile(unit);
     if (!filename) return;
 
     const audioPath = `/audio/tajweed/${filename}`;
@@ -67,10 +79,7 @@ export default function TajweedText({ transliteration }: { transliteration: stri
   return (
     <span className="italic flex flex-wrap gap-x-0.5">
       {tokens.map((token, index) => {
-        const lowerToken = token.toLowerCase();
-        
-        // Determine if token is interactive (exists in mapping)
-        const isInteractive = !!PHONETIC_INDEX[lowerToken] || !!PHONETIC_INDEX[lowerToken.charAt(0)];
+        const isInteractive = !!getPhoneticFile(token);
 
         if (isInteractive) {
           return (
@@ -80,14 +89,13 @@ export default function TajweedText({ transliteration }: { transliteration: stri
                 e.stopPropagation();
                 playSound(token);
               }}
-              className="cursor-pointer hover:text-blue-500 border-b border-dotted border-brand-clay transition-all duration-200"
+              className="cursor-pointer hover:text-blue-500 hover:scale-110 border-b border-dotted border-brand-clay transition-all duration-200 inline-block transform"
             >
               {token}
             </span>
           );
         }
 
-        // Static part (e.g., spaces, punctuation)
         return <React.Fragment key={`${token}-${index}`}>{token}</React.Fragment>;
       })}
     </span>

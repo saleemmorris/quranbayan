@@ -72,13 +72,12 @@
     - **Madd:** Lengthen the sequence by doubling the carrier letter or identifying Maddah symbols.
 - **Filenames:** Match the `1_alif` through `30_yaa` convention.
 
-## 10. Phonetic Implementation Status (Integration)
-- **Tokenization:** Uses regex `/([b-zḥḏʿġšṣḍṭẓʾ][āīūaiu]?|')/gi` in `TajweedText.tsx` to split transliteration into phonetic units.
-- **Mapping:** `src/constants/phoneticMap.ts` (PHONETIC_INDEX) links DIN 31635 symbols to `/public/audio/tajweed/` assets.
-- **Interactive UI:** Each tokenized unit is clickable, triggers `playSound(token)`, and uses `hover:text-blue-500` and `border-b border-dotted border-brand-clay`.
-- **Phonetic Overlaps:**
-    - **Shadda:** Handled during Arabic-to-audio builder, but transliteration tokens do not yet explicitly double on click (they play the base consonant).
-    - **Madd:** Long vowels (`ā`, `ī`, `ū`) are correctly mapped to their respective long-vowel carriers.
+## 10. Phonetic Syllable Mapping (Syllabic Reconstruction)
+- **Tokenization:** Uses regex `/([b-zḥḏʿġšṣḍṭẓʾ][āīūaiu]?|')/gi` to split transliteration into Consonant+Vowel units (e.g., "la-raḥīmi" -> ["la", "ra", "ḥī", "mi"]).
+- **Logic:** `getPhoneticFile(unit)` combines keys from `PHONETIC_INDEX` (src/constants/phoneticMap.ts).
+- **Naming Convention:** `${consonant}${vowel}.mp3` (e.g., `lam_a.mp3` for "la", `hha_i_long.mp3` for "ḥī").
+- **Standalone Consonants:** If no vowel is present (Sukun), it plays the base letter name (e.g., `f` -> `faa.mp3`).
+- **UI Interaction:** Clickable spans with `hover:text-blue-500 hover:scale-110 border-b border-dotted border-brand-clay`.
 
 ## 11. Word Audio Protocol (SSS_AAA_WWW)
 - **Naming Convention:** `SSS_AAA_WWW.mp3` (e.g., `001_001_001.mp3` for the first word of the Quran).
