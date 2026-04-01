@@ -143,7 +143,22 @@ export default function WordAnalysis({ verseKey, location }: WordAnalysisProps) 
         <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-brand-olive/80">English Meaning</h3>
         <div className="rounded-2xl border border-brand-border bg-brand-card/30 p-6">
           <div className="text-2xl font-medium text-foreground">
-            {parse(wordData.translation?.text || "Click for full lexicon analysis.")}
+            {wordData.translation?.text ? (
+              parse(wordData.translation.text)
+            ) : (
+              <button 
+                onClick={() => {
+                  const parts = location.split(':');
+                  if (parts.length >= 2) {
+                    const [chapter, verse] = parts;
+                    window.open(`https://corpus.quran.com/wordbyword.jsp?chapter=${chapter}&verse=${verse}#(${location})`, '_blank');
+                  }
+                }}
+                className="text-brand-olive hover:underline underline-offset-4 cursor-pointer text-lg font-semibold"
+              >
+                Click for full lexicon analysis.
+              </button>
+            )}
           </div>
         </div>
       </section>

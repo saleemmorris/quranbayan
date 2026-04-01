@@ -44,6 +44,37 @@ describe('WordAnalysis Component', () => {
     expect(screen.getByText(/In \(the\) name/i)).toBeInTheDocument();
   });
 
+  it('should render lexicon link when translation is missing', async () => {
+    const mockApiResponse = {
+      verse: {
+        id: 1,
+        verse_key: "1:1",
+        words: [
+          {
+            id: 1,
+            position: 1,
+            text: "ﭑ",
+            transliteration: { text: "bis'mi" }
+            // translation is missing
+          }
+        ]
+      }
+    };
+
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockApiResponse,
+    });
+
+    render(<WordAnalysis verseKey="1:1" location="1:1:1" />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Click for full lexicon analysis/i)).toBeInTheDocument();
+    });
+    
+    expect(screen.getByRole('button', { name: /Click for full lexicon analysis/i })).toBeInTheDocument();
+  });
+
   it('should render RootDisplay when root is present', async () => {
     const mockApiResponse = {
       verse: {
