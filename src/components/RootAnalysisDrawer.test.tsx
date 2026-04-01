@@ -5,6 +5,7 @@ import RootAnalysisDrawer from './RootAnalysisDrawer';
 // Mock Lucide icons
 jest.mock('lucide-react', () => ({
   X: () => <div data-testid="x-icon" />,
+  Volume2: () => <div data-testid="volume2-icon" />,
 }));
 
 // Mock TajweedText component
@@ -19,6 +20,11 @@ jest.mock('./WordAnalysis', () => ({
   default: ({ location }: { location: string }) => <div data-testid="word-analysis">Analysis for {location}</div>,
 }));
 
+// Mock audioUtils
+jest.mock('@/lib/audioUtils', () => ({
+  getWordAudioUrl: jest.fn(() => '/mock-audio.mp3'),
+}));
+
 const mockAnalysis = {
   word: 'بِسْمِ',
   transliteration: 'bismi',
@@ -28,6 +34,10 @@ const mockAnalysis = {
 describe('RootAnalysisDrawer', () => {
   beforeEach(() => {
     global.open = jest.fn();
+    // Mock Audio
+    global.Audio = jest.fn().mockImplementation(() => ({
+      play: jest.fn().mockResolvedValue(undefined),
+    })) as any;
   });
 
   afterEach(() => {
@@ -48,6 +58,7 @@ describe('RootAnalysisDrawer', () => {
     expect(screen.getByText('bismi')).toBeInTheDocument();
     expect(screen.getByText(/Location 1:1:1/i)).toBeInTheDocument();
     expect(screen.getByTestId('word-analysis')).toBeInTheDocument();
+    expect(screen.getByTestId('volume2-icon')).toBeInTheDocument();
   });
 
   it('calls onClose when close button is clicked', () => {
@@ -63,5 +74,19 @@ describe('RootAnalysisDrawer', () => {
     const closeButton = screen.getByLabelText('Close Analysis');
     fireEvent.click(closeButton);
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('plays audio when volume icon is clicked', () => {
+    render(
+      <RootAnalysisDrawer
+        isOpen={true}
+        onClose={() => {}}
+        analysis={mockAnalysis}
+      />
+    );
+
+    const playButton = screen.getByLabelText('Play Word Audio');
+    fireEvent.click(playButton);
+    expect(global.Audio).toHaveBeenCalledWith('/mock-audio.mp3');
   });
 });

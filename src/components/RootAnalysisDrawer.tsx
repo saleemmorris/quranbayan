@@ -1,9 +1,10 @@
 'use client';
 
 import React from 'react';
-import { X } from 'lucide-react';
+import { X, Volume2 } from 'lucide-react';
 import TajweedText from './TajweedText';
 import WordAnalysis from './WordAnalysis';
+import { getWordAudioUrl } from '@/lib/audioUtils';
 
 interface WordAnalysisData {
   word: string;
@@ -22,13 +23,29 @@ interface RootAnalysisDrawerProps {
 /**
  * RootAnalysisDrawer provides word-level linguistic analysis.
  * Follows Zaytuna design system (Olive & Clay).
- * Uses WordAnalysis component for fetching and rendering data.
+ * Includes Word-Level Audio Sync (SSS_AAA_WWW protocol).
  */
 export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAnalysisDrawerProps) {
   if (!analysis) return null;
 
   // Extract verse key (e.g., "1:1" from "1:1:1")
-  const verseKey = analysis.location.split(':').slice(0, 2).join(':');
+  const locationParts = analysis.location.split(':');
+  const verseKey = locationParts.slice(0, 2).join(':');
+
+  const handlePlayWord = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (locationParts.length === 3) {
+      const surah = parseInt(locationParts[0], 10);
+      const ayah = parseInt(locationParts[1], 10);
+      const word = parseInt(locationParts[2], 10);
+      
+      const audioUrl = getWordAudioUrl(surah, ayah, word);
+      const audio = new Audio(audioUrl);
+      audio.play().catch((err) => {
+        console.warn(`Word audio not found or failed to play: ${audioUrl}`, err);
+      });
+    }
+  };
 
   return (
     <>
@@ -40,7 +57,7 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
 
       {/* Drawer */}
       <aside 
-        className={`fixed end-0 top-0 z-[70] h-full w-full max-w-md bg-background shadow-2xl transition-transform duration-500 ease-in-out sm:border-s sm:border-brand-border ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed end-0 top-0 z-[70] h-full w-full max-md:max-w-full md:max-w-md bg-background shadow-2xl transition-transform duration-500 ease-in-out sm:border-s sm:border-brand-border ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
         <div className="flex h-full flex-col p-8">
           <header className="flex items-center justify-between border-b border-brand-border pb-6">
@@ -56,9 +73,19 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
 
           <div className="mt-12 flex-1 overflow-y-auto">
             <div className="flex flex-col items-center gap-6 text-center">
-              <span className="font-amiri text-7xl text-brand-olive" dir="rtl">
-                {analysis.word.normalize('NFC')}
-              </span>
+              <div className="relative group">
+                <span className="font-amiri text-7xl text-brand-olive" dir="rtl">
+                  {analysis.word.normalize('NFC')}
+                </span>
+                <button
+                  onClick={handlePlayWord}
+                  className="absolute -right-12 top-1/2 -translate-y-1/2 p-3 rounded-full bg-brand-olive/5 text-brand-olive hover:bg-brand-olive/20 hover:text-brand-olive transition-all duration-200 shadow-sm"
+                  aria-label="Play Word Audio"
+                >
+                  <Volume2 className="h-6 w-6" strokeWidth={2.5} />
+                </button>
+              </div>
+              
               <div className="flex flex-col gap-2">
                 <span className="text-3xl font-bold text-brand-clay italic">
                   <TajweedText transliteration={analysis.transliteration} />

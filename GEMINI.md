@@ -80,11 +80,17 @@
     - **Shadda:** Handled during Arabic-to-audio builder, but transliteration tokens do not yet explicitly double on click (they play the base consonant).
     - **Madd:** Long vowels (`ā`, `ī`, `ū`) are correctly mapped to their respective long-vowel carriers.
 
-## 11. Build-Step & Asset Management
+## 11. Word Audio Protocol (SSS_AAA_WWW)
+- **Naming Convention:** `SSS_AAA_WWW.mp3` (e.g., `001_001_001.mp3` for the first word of the Quran).
+- **Directory:** All word-level audio files must reside in `/public/audio/words/`.
+- **Padding Logic:** Surah, Ayah, and Word index are each padded to exactly 3 digits with leading zeros.
+- **Trigger:** Accessible via the `Volume2` icon in the `RootAnalysisDrawer` (Word Analysis view).
+
+## 12. Build-Step & Asset Management
 - **Automation:** Use `scripts/download-makharij.js` (or manual ZIP) to populate `/public/audio/tajweed/`.
 - **Prebuild:** Ensure `package.json` includes `prebuild` scripts if assets are being fetched dynamically.
 
-## 12. Next.js 16.2+ & React 19 Protocols
+## 13. Next.js 16.2+ & React 19 Protocols
 - **Component Defaults:** Default to **Server Components**. Move `'use client'` to the lowest possible "leaf" components.
 - **Streaming:** Implement **Streaming with Suspense** for API-heavy data (e.g., Root Analysis).
 - **Data Fetching:** Use **Async Server Components**. Leverage native `fetch` caching. 
