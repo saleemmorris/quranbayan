@@ -12,34 +12,34 @@ interface ArabicLetter {
 }
 
 const ARABIC_LETTERS: ArabicLetter[] = [
-  { letter: 'ا', transliteration: 'ā', makhraj: 'Empty space in mouth/throat', sound: 'alif' },
-  { letter: 'ب', transliteration: 'b', makhraj: 'Inside of lips', sound: 'ba' },
-  { letter: 'ت', transliteration: 't', makhraj: 'Tip of tongue/roots of upper teeth', sound: 'ta' },
-  { letter: 'ث', transliteration: 'th', makhraj: 'Tip of tongue/edges of upper teeth', sound: 'tha' },
-  { letter: 'ج', transliteration: 'j', makhraj: 'Middle of tongue/roof of mouth', sound: 'jeem' },
-  { letter: 'ح', transliteration: 'ḥ', makhraj: 'Middle of throat', sound: 'hah-deep' },
-  { letter: 'خ', transliteration: 'kh', makhraj: 'Top of throat', sound: 'kha' },
-  { letter: 'د', transliteration: 'd', makhraj: 'Tip of tongue/roots of upper teeth', sound: 'dal' },
-  { letter: 'ذ', transliteration: 'dh', makhraj: 'Tip of tongue/edges of upper teeth', sound: 'dhal' },
-  { letter: 'ر', transliteration: 'r', makhraj: 'Tip of tongue/gums of upper teeth', sound: 'ra' },
-  { letter: 'ز', transliteration: 'z', makhraj: 'Tip of tongue/edges of lower teeth', sound: 'zay' },
-  { letter: 'س', transliteration: 's', makhraj: 'Tip of tongue/edges of lower teeth', sound: 'seen' },
-  { letter: 'ش', transliteration: 'sh', makhraj: 'Middle of tongue/roof of mouth', sound: 'sheen' },
-  { letter: 'ص', transliteration: 'ṣ', makhraj: 'Tip of tongue/edges of lower teeth', sound: 'sad-heavy' },
-  { letter: 'ض', transliteration: 'ḍ', makhraj: 'Side of tongue/upper molars', sound: 'dad-heavy' },
-  { letter: 'ط', transliteration: 'ṭ', makhraj: 'Tip of tongue/roots of upper teeth', sound: 'tah-heavy' },
-  { letter: 'ظ', transliteration: 'ẓ', makhraj: 'Tip of tongue/edges of upper teeth', sound: 'zah-heavy' },
-  { letter: 'ع', transliteration: 'ʿ', makhraj: 'Middle of throat', sound: 'ayn-deep' },
-  { letter: 'غ', transliteration: 'gh', makhraj: 'Top of throat', sound: 'ghayn' },
-  { letter: 'ف', transliteration: 'f', makhraj: 'Bottom lip/edges of upper teeth', sound: 'fa' },
-  { letter: 'ق', transliteration: 'q', makhraj: 'Deepest part of tongue/soft palate', sound: 'qaf' },
-  { letter: 'ك', transliteration: 'k', makhraj: 'Back of tongue/hard palate', sound: 'kaf' },
-  { letter: 'ل', transliteration: 'l', makhraj: 'Edge of tongue/upper gums', sound: 'lam' },
-  { letter: 'م', transliteration: 'm', makhraj: 'Outer part of lips', sound: 'meem' },
-  { letter: 'ن', transliteration: 'n', makhraj: 'Tip of tongue/upper gums', sound: 'noon' },
-  { letter: 'ه', transliteration: 'h', makhraj: 'Deepest part of throat', sound: 'ha' },
-  { letter: 'و', transliteration: 'w', makhraj: 'Rounding of the lips', sound: 'waw' },
-  { letter: 'ي', transliteration: 'y', makhraj: 'Middle of tongue/roof of mouth', sound: 'ya' },
+  { letter: 'ا', transliteration: 'ā', makhraj: 'Empty space in mouth/throat', sound: '1_alif' },
+  { letter: 'ب', transliteration: 'b', makhraj: 'Inside of lips', sound: '2_baa' },
+  { letter: 'ت', transliteration: 't', makhraj: 'Tip of tongue/roots of upper teeth', sound: '3_taa' },
+  { letter: 'ث', transliteration: 'th', makhraj: 'Tip of tongue/edges of upper teeth', sound: '4_thaa' },
+  { letter: 'ج', transliteration: 'j', makhraj: 'Middle of tongue/roof of mouth', sound: '5_jeem' },
+  { letter: 'ح', transliteration: 'ḥ', makhraj: 'Middle of throat', sound: '6_haa' },
+  { letter: 'خ', transliteration: 'kh', makhraj: 'Top of throat', sound: '7_khaa' },
+  { letter: 'د', transliteration: 'd', makhraj: 'Tip of tongue/roots of upper teeth', sound: '8_daal' },
+  { letter: 'ذ', transliteration: 'dh', makhraj: 'Tip of tongue/edges of upper teeth', sound: '9_zaal' },
+  { letter: 'ر', transliteration: 'r', makhraj: 'Tip of tongue/gums of upper teeth', sound: '10_raa' },
+  { letter: 'ز', transliteration: 'z', makhraj: 'Tip of tongue/edges of lower teeth', sound: '11_zaa' },
+  { letter: 'س', transliteration: 's', makhraj: 'Tip of tongue/edges of lower teeth', sound: '12_seen' },
+  { letter: 'ش', transliteration: 'sh', makhraj: 'Middle of tongue/roof of mouth', sound: '13_sheen' },
+  { letter: 'ص', transliteration: 'ṣ', makhraj: 'Tip of tongue/edges of lower teeth', sound: '14_saad' },
+  { letter: 'ض', transliteration: 'ḍ', makhraj: 'Side of tongue/upper molars', sound: '15_daad' },
+  { letter: 'ط', transliteration: 'ṭ', makhraj: 'Tip of tongue/roots of upper teeth', sound: '16_taah' },
+  { letter: 'ظ', transliteration: 'ẓ', makhraj: 'Tip of tongue/edges of upper teeth', sound: '17_zhaa' },
+  { letter: 'ع', transliteration: 'ʿ', makhraj: 'Middle of throat', sound: '18_ain' },
+  { letter: 'غ', transliteration: 'gh', makhraj: 'Top of throat', sound: '19_ghain' },
+  { letter: 'ف', transliteration: 'f', makhraj: 'Bottom lip/edges of upper teeth', sound: '20_faa' },
+  { letter: 'ق', transliteration: 'q', makhraj: 'Deepest part of tongue/soft palate', sound: '21_qaaf' },
+  { letter: 'ك', transliteration: 'k', makhraj: 'Back of tongue/hard palate', sound: '22_kaaf' },
+  { letter: 'ل', transliteration: 'l', makhraj: 'Edge of tongue/upper gums', sound: '23_laam' },
+  { letter: 'م', transliteration: 'm', makhraj: 'Outer part of lips', sound: '24_meem' },
+  { letter: 'ن', transliteration: 'n', makhraj: 'Tip of tongue/upper gums', sound: '25_noon' },
+  { letter: 'ه', transliteration: 'h', makhraj: 'Deepest part of throat', sound: '26_haah' },
+  { letter: 'و', transliteration: 'w', makhraj: 'Rounding of the lips', sound: '27_waw' },
+  { letter: 'ي', transliteration: 'y', makhraj: 'Middle of tongue/roof of mouth', sound: '30_yaa' },
 ];
 
 const MAKHRAJ_GROUPS = [
@@ -113,7 +113,7 @@ export default function PronunciationGuidePage() {
                     <span className="font-mono text-lg font-bold text-brand-clay">{item.transliteration}</span>
                   </div>
                   <div className="mt-4 border-t border-brand-border/50 pt-4">
-                    <span className="text-xs font-bold uppercase tracking-widest text-foreground/70 block mb-1">Makhraj</span>
+                    <span className="text-xs font-bold uppercase tracking-widest text-foreground/70 block mb-1">Makharij Description</span>
                     <p className="text-sm text-foreground/70 leading-snug">{item.makhraj}</p>
                   </div>
                 </div>
