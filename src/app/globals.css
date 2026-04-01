@@ -62,3 +62,24 @@ button,
   padding-left: 100%; /* Start from the right side */
 }
 
+/* Phonetic Triggers for Transliteration */
+.phonetic-trigger {
+  cursor: pointer;
+  border-bottom: 1px dotted var(--color-olive);
+  transition: color 0.2s ease, border-color 0.2s ease;
+  display: inline-block;
+}
+
+.phonetic-trigger:hover {
+  color: var(--color-olive);
+  border-bottom-style: solid;
+}
+
+:root .phonetic-trigger {
+  border-color: rgba(62, 74, 46, 0.4);
+}
+
+.dark .phonetic-trigger {
+  border-color: rgba(218, 230, 194, 0.4);
+}
+
