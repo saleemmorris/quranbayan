@@ -1,125 +1,154 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { getWordAudioUrl } from '@/lib/audioUtils';
-import { CheckCircle2, XCircle, Volume2, Search } from 'lucide-react';
 
-const TEST_WORDS = [
-  { text: 'بِسْمِ', surah: 1, ayah: 1, word: 1 },
-  { text: 'ٱللَّهِ', surah: 1, ayah: 1, word: 2 },
-  { text: 'ٱلرَّحْمَـٰنِ', surah: 1, ayah: 1, word: 3 },
-  { text: 'ٱلرَّحِيمِ', surah: 1, ayah: 1, word: 4 },
-  { text: 'ٱلْحَمْدُ', surah: 1, ayah: 2, word: 1 },
+const DEBUG_WORDS = [
+  { id: '001_001_001', text: 'بِسْمِ', transliteration: "bis'mi", path: '/audio/words/001_001_001.mp3' },
+  { id: '001_001_002', text: 'اللَّهِ', transliteration: 'l-lahi', path: '/audio/words/001_001_002.mp3' },
+  { id: '001_001_003', text: 'الرَّحْمَنِ', transliteration: 'l-raḥmāni', path: '/audio/words/001_001_003.mp3' },
+  { id: '001_001_004', text: 'الرَّحِيمِ', transliteration: 'l-raḥīmi', path: '/audio/words/001_001_004.mp3' },
+  { id: '001_002_001', text: 'الْحَمْدُ', transliteration: 'al-ḥamdu', path: '/audio/words/001_002_001.mp3' },
 ];
 
 export default function DebugAudioPage() {
-  const [results, setResults] = useState<Record<string, { status?: number; error?: string }>>({});
+  const [results, setResults] = useState<Record<string, { status?: number; error?: string; playing?: boolean }>>({});
   const [userActivation, setUserActivation] = useState<boolean>(false);
 
   useEffect(() => {
-    // Check activation state
     const checkActivation = () => {
       // @ts-ignore - navigator.userActivation is relatively new
-      const isActive = navigator.userActivation?.isActive || false;
+      const isActive = !!(navigator.userActivation && navigator.userActivation.isActive);
       setUserActivation(isActive);
-      console.log('DEBUG_AUDIO: navigator.userActivation.isActive ->', isActive);
+      console.log('DEBUG_AUDIO: User Activation State:', isActive);
     };
 
-    const timer = setInterval(checkActivation, 1000);
-    return () => clearInterval(timer);
+    window.addEventListener('click', checkActivation);
+    checkActivation();
+
+    return () => window.removeEventListener('click', checkActivation);
   }, []);
 
-  const testPath = async (path: string) => {
-    console.log(`DEBUG_AUDIO: Testing path -> ${path}`);
+  const testPath = async (id: string, path: string) => {
+    console.log(`DEBUG_AUDIO: Testing path for ${id}: ${path}`);
     try {
       const response = await fetch(path, { method: 'HEAD' });
-      console.log(`DEBUG_AUDIO: Response for ${path} -> Status ${response.status}`);
-      setResults(prev => ({ ...prev, [path]: { status: response.status } }));
-    } catch (err: any) {
-      console.error(`DEBUG_AUDIO: Fetch error for ${path} ->`, err);
-      setResults(prev => ({ ...prev, [path]: { error: err.message } }));
+      setResults(prev => ({
+        ...prev,
+        [id]: { ...prev[id], status: response.status }
+      }));
+      console.log(`DEBUG_AUDIO: ${id} fetch result: ${response.status}`);
+    } catch (err) {
+      setResults(prev => ({
+        ...prev,
+        [id]: { ...prev[id], error: String(err) }
+      }));
+      console.error(`DEBUG_AUDIO: ${id} fetch error:`, err);
     }
   };
 
-  const forcePlay = async (path: string) => {
-    console.log(`DEBUG_AUDIO: Force playing -> ${path}`);
-    try {
-      const audio = new Audio(path);
-      await audio.play();
-      console.log(`DEBUG_AUDIO: Playback started successfully for ${path}`);
-    } catch (err: any) {
-      console.error(`DEBUG_AUDIO: Playback failed for ${path} ->`, err);
-      alert(`Playback failed: ${err.name} - ${err.message}`);
-    }
+  const forcePlay = (id: string, path: string) => {
+    console.log(`DEBUG_AUDIO: Force playing ${id}: ${path}`);
+    const audio = new Audio(path);
+    
+    setResults(prev => ({
+      ...prev,
+      [id]: { ...prev[id], playing: true }
+    }));
+
+    audio.play()
+      .then(() => {
+        console.log(`DEBUG_AUDIO: ${id} playback started`);
+      })
+      .catch(err => {
+        console.error(`DEBUG_AUDIO: ${id} playback failed:`, err);
+        setResults(prev => ({
+          ...prev,
+          [id]: { ...prev[id], error: err.name + ': ' + err.message, playing: false }
+        }));
+      });
+    
+    audio.onended = () => {
+      setResults(prev => ({
+        ...prev,
+        [id]: { ...prev[id], playing: false }
+      }));
+    };
   };
 
   return (
-    <div className="container mx-auto p-8 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-2 text-brand-olive">Audio Diagnostic Tool</h1>
-      <p className="text-foreground/70 mb-8">Verify local asset existence and bypass Tajweed logic.</p>
+    <div className="p-8 max-w-4xl mx-auto space-y-8 bg-[#F7F8F2] dark:bg-[#1C1F16] min-h-screen text-[#3E4A2E] dark:text-[#C5D1AF]">
+      <header className="border-b border-[#E2E4D8] dark:border-[#323828] pb-4">
+        <h1 className="text-3xl font-bold font-amiri text-[#3E4A2E] dark:text-[#C5D1AF]">Audio Diagnostic Tool</h1>
+        <p className="text-[#7A5C33] dark:text-[#E5D3B3] mt-2">Testing local audio assets and browser constraints</p>
+      </header>
 
-      <div className="bg-brand-clay/10 p-4 rounded-xl mb-8 border border-brand-clay/20">
-        <h2 className="text-sm font-bold uppercase tracking-widest mb-2">Browser State</h2>
-        <div className="flex items-center gap-2">
-          <div className={`h-3 w-3 rounded-full ${userActivation ? 'bg-green-500' : 'bg-amber-500'}`} />
-          <span className="font-mono text-sm">
-            navigator.userActivation.isActive: <span className="font-bold">{userActivation ? 'TRUE' : 'FALSE'}</span>
-          </span>
+      <div className="bg-white dark:bg-[#25291C] p-4 rounded-lg shadow-sm border border-[#E2E4D8] dark:border-[#323828]">
+        <h2 className="font-semibold mb-2">Browser Status</h2>
+        <div className="flex items-center space-x-4">
+          <span>User Activation:</span>
+          {userActivation ? (
+            <span className="text-green-600 font-bold">ACTIVE (✓)</span>
+          ) : (
+            <span className="text-red-600 font-bold">INACTIVE (X)</span>
+          )}
+          <span className="text-xs text-gray-500">(Click anywhere to activate)</span>
         </div>
-        <p className="text-xs text-foreground/60 mt-2 italic">
-          Note: TRUE means the browser will likely allow audio. FALSE means it might block until you click something.
-        </p>
       </div>
 
       <div className="space-y-4">
-        {TEST_WORDS.map((w) => {
-          const path = getWordAudioUrl(w.surah, w.ayah, w.word);
-          const res = results[path];
-
-          return (
-            <div key={path} className="bg-background border border-brand-border rounded-2xl p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="flex items-center gap-6">
-                <span className="font-amiri text-4xl text-brand-olive min-w-[80px]" dir="rtl">{w.text}</span>
-                <div className="flex flex-col">
-                  <span className="text-xs font-bold text-foreground/50 uppercase">Location {w.surah}:{w.ayah}:{w.word}</span>
-                  <code className="text-sm bg-foreground/5 px-2 py-1 rounded mt-1">{path}</code>
+        {DEBUG_WORDS.map((word) => (
+          <div key={word.id} className="bg-white dark:bg-[#25291C] p-6 rounded-xl border border-[#E2E4D8] dark:border-[#323828] shadow-sm">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl font-amiri font-bold">{word.text}</span>
+                  <span className="text-sm text-[#7A5C33] dark:text-[#E5D3B3]">{word.transliteration}</span>
+                </div>
+                <div className="text-xs font-mono bg-gray-100 dark:bg-black/20 p-1 rounded">
+                  {word.path}
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
-                {res && (
-                  <div className="mr-4 flex items-center gap-2">
-                    {res.status === 200 ? (
-                      <><CheckCircle2 className="text-green-500 h-5 w-5" /> <span className="text-xs font-bold text-green-600">FOUND</span></>
-                    ) : (
-                      <><XCircle className="text-red-500 h-5 w-5" /> <span className="text-xs font-bold text-red-600">ERROR {res.status || res.error}</span></>
-                    )}
-                  </div>
-                )}
-
+              <div className="flex flex-wrap gap-2 items-center">
                 <button
-                  onClick={() => testPath(path)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-clay/10 text-brand-clay hover:bg-brand-clay/20 transition-all font-bold text-sm"
+                  onClick={() => testPath(word.id, word.path)}
+                  className="px-4 py-2 bg-[#3E4A2E] text-white rounded hover:bg-[#3E4A2E]/90 transition-colors text-sm"
                 >
-                  <Search className="h-4 w-4" />
                   Test Path
                 </button>
-
                 <button
-                  onClick={() => forcePlay(path)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-olive text-white hover:opacity-90 transition-all font-bold text-sm"
+                  onClick={() => forcePlay(word.id, word.path)}
+                  className="px-4 py-2 bg-[#7A5C33] text-white rounded hover:bg-[#7A5C33]/90 transition-colors text-sm"
                 >
-                  <Volume2 className="h-4 w-4" />
                   Force Play
                 </button>
+
+                <div className="flex items-center ml-4 space-x-2">
+                  {results[word.id]?.status === 200 && (
+                    <span className="text-green-600 font-bold" title="Status 200 OK">✓ Found</span>
+                  )}
+                  {results[word.id]?.status && results[word.id]?.status !== 200 && (
+                    <span className="text-red-600 font-bold" title={`Status ${results[word.id].status}`}>
+                      X (Status: {results[word.id].status})
+                    </span>
+                  )}
+                  {results[word.id]?.error && (
+                    <div className="text-red-500 text-xs max-w-[200px] truncate" title={results[word.id].error}>
+                      Error: {results[word.id].error}
+                    </div>
+                  )}
+                  {results[word.id]?.playing && (
+                    <span className="animate-pulse text-blue-500">🔊 Playing...</span>
+                  )}
+                </div>
               </div>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
 
-      <footer className="mt-12 pt-8 border-t border-brand-border text-foreground/50 text-sm italic">
-        Check the browser console (F12) for detailed logs prefixed with <strong>DEBUG_AUDIO:</strong>
+      <footer className="text-sm text-[#7A5C33] dark:text-[#E5D3B3] border-t border-[#E2E4D8] dark:border-[#323828] pt-4">
+        <p>Results are also printed to the browser console with "DEBUG_AUDIO:" prefix.</p>
       </footer>
     </div>
   );
