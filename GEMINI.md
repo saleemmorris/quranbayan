@@ -97,11 +97,21 @@
 - **Hydration:** Confirmed `RootAnalysisDrawer` uses `'use client'` and user-event-driven `Audio` instantiation to bypass autoplay blocks.
 - **Error Handling:** Implemented `audio.onerror` and `try-catch` in `handlePlayWord` for detailed "Audio Load Failed" console logging.
 
-## 14. Build-Step & Asset Management
+## 14. Deep-Trace Audio Debug (April 2026)
+- **Padding Logic:** `SSS_AAA_WWW` uses `pad(num, 3)` which ensures `1` becomes `001`, `114` remains `114`.
+- **Injection:** Added `console.log` for Surah/Ayah/Word indices and generated `audioUrl`.
+- **Listeners:** Added `error` and `canplaythrough` listeners to the `Audio` object.
+- **Visual Feedback:** Play icon turns RED (`#ef4444`) on failure using `audioError` state.
+- **Expected Errors:**
+    - `404 (Not Found)`: File does not exist in `/public/audio/words/`.
+    - `403 (Forbidden)`: CSP or Permission issue.
+    - `NotAllowedError`: User gesture required (should be fixed by `onClick` handler).
+
+## 15. Build-Step & Asset Management
 - **Automation:** Use `scripts/download-makharij.js` (or manual ZIP) to populate `/public/audio/tajweed/`.
 - **Prebuild:** Ensure `package.json` includes `prebuild` scripts if assets are being fetched dynamically.
 
-## 15. Next.js 16.2+ & React 19 Protocols
+## 16. Next.js 16.2+ & React 19 Protocols
 - **Component Defaults:** Default to **Server Components**. Move `'use client'` to the lowest possible "leaf" components.
 - **Streaming:** Implement **Streaming with Suspense** for API-heavy data (e.g., Root Analysis).
 - **Data Fetching:** Use **Async Server Components**. Leverage native `fetch` caching. 

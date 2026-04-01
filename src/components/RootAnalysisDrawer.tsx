@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { X, Volume2 } from 'lucide-react';
 import TajweedText from './TajweedText';
 import WordAnalysis from './WordAnalysis';
@@ -29,6 +29,8 @@ interface RootAnalysisDrawerProps {
  * via user-triggered events to satisfy browser autoplay policies.
  */
 export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAnalysisDrawerProps) {
+  const [audioError, setAudioError] = useState(false);
+
   if (!analysis) return null;
 
   // Extract verse key (e.g., "1:1" from "1:1:1")
@@ -37,28 +39,39 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
 
   /**
    * Triggers word-level audio playback.
-   * Includes detailed error logging for network/asset failures.
+   * Includes detailed debug logging and visual error feedback.
    */
   const handlePlayWord = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    setAudioError(false);
+
     if (locationParts.length === 3) {
       const surah = parseInt(locationParts[0], 10);
       const ayah = parseInt(locationParts[1], 10);
-      const word = parseInt(locationParts[2], 10);
+      const wordIndex = parseInt(locationParts[2], 10);
       
-      const audioUrl = getWordAudioUrl(surah, ayah, word);
+      console.log('DEBUG: Clicking Word', { surah, ayah, wordIndex });
+      
+      const audioUrl = getWordAudioUrl(surah, ayah, wordIndex);
+      console.log('DEBUG: Generated Path ->', audioUrl);
       
       try {
         const audio = new Audio(audioUrl);
         
-        // Add specific event listener for detailed load failure logging
-        audio.onerror = () => {
+        audio.addEventListener('error', (err) => {
+          console.error('DEBUG: Audio Error Object:', err.target && (err.target as any).error);
           console.error(`Audio Load Failed: [${audioUrl}] - check path in /public/audio/words/`);
-        };
+          setAudioError(true);
+        });
+
+        audio.addEventListener('canplaythrough', () => {
+          console.log('DEBUG: Audio buffered and ready.');
+        });
 
         await audio.play();
       } catch (err) {
         console.error(`Audio Playback Failed: [${audioUrl}]`, err);
+        setAudioError(true);
       }
     }
   };
@@ -95,7 +108,11 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
                 </span>
                 <button
                   onClick={handlePlayWord}
-                  className="absolute -right-12 top-1/2 -translate-y-1/2 p-3 rounded-full bg-brand-olive/5 text-brand-olive hover:bg-brand-olive/20 hover:text-brand-olive transition-all duration-200 shadow-sm"
+                  className={`absolute -right-12 top-1/2 -translate-y-1/2 p-3 rounded-full transition-all duration-200 shadow-sm ${
+                    audioError 
+                      ? 'bg-red-50 text-[#ef4444] border border-red-200' 
+                      : 'bg-brand-olive/5 text-brand-olive hover:bg-brand-olive/20'
+                  }`}
                   aria-label="Play Word Audio"
                 >
                   <Volume2 className="h-6 w-6" strokeWidth={2.5} />
