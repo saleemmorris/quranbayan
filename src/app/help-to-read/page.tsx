@@ -54,10 +54,10 @@ export default function HelpToReadPage() {
 
           {/* Ghunnah Section */}
           <section className="flex flex-col rounded-3xl border border-brand-border bg-brand-card p-8 shadow-sm transition-all hover:shadow-md">
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#4CAF50]/10 text-[#4CAF50]">
+            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-olive/10 text-brand-olive">
               <Wind className="h-6 w-6" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground">Green = Ghunnah</h2>
+            <h2 className="text-2xl font-bold text-foreground">Olive = Ghunnah</h2>
             <p className="mt-4 flex-1 text-foreground/70 leading-relaxed">
               <strong>Nasalization:</strong> A vibrating sound produced through the nose. This happens on doubled <em>Meem</em> (mm) and <em>Noon</em> (nn).
             </p>
@@ -71,10 +71,10 @@ export default function HelpToReadPage() {
 
           {/* Qalqalah Section */}
           <section className="flex flex-col rounded-3xl border border-brand-border bg-brand-card p-8 shadow-sm transition-all hover:shadow-md">
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FF5722]/10 text-[#FF5722]">
+            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-clay/10 text-brand-clay">
               <Music className="h-6 w-6" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground">Orange = Qalqalah</h2>
+            <h2 className="text-2xl font-bold text-foreground">Clay = Qalqalah</h2>
             <p className="mt-4 flex-1 text-foreground/70 leading-relaxed">
               <strong>Echo Sound:</strong> A bouncing or echoing sound made when certain letters (q, t, b, j, d) appear with a Sukun or at the end of a word.
             </p>

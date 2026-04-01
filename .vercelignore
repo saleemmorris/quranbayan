@@ -1,5 +1,2 @@
-# AI Agent & Local Configs
-AGENTS.md
-GEMINI.md
-CLAUDE.md
-.geminiignore
+.next
+node_modules

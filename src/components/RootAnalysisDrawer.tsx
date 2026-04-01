@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import TajweedText from './TajweedText';
 import TajweedPlayer from './TajweedPlayer';
+import parse from 'html-react-parser';
 
 interface WordAnalysis {
   word: string;
@@ -44,18 +45,11 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
       // Extract verse key (e.g., "1:1" from "1:1:1")
       const verseKey = analysis.location.split(':').slice(0, 2).join(':');
       
-      fetch(`https://api.quran.com/api/v4/verses/by_key/${verseKey}?words=true&word_fields=root_modern,grammar_description,translation`)
+      fetch(`/api/word-analysis?verseKey=${verseKey}&location=${analysis.location}`)
         .then(res => res.json())
         .then(data => {
-          const words = data.verse?.words || [];
-          const matchedWord = words.find((w: { location: string; root_modern?: string; grammar_description?: string; translation?: { text: string } }) => w.location === analysis.location);
-          if (matchedWord) {
-            setWordInfo({
-              root_modern: matchedWord.root_modern,
-              grammar_description: matchedWord.grammar_description,
-              translation: matchedWord.translation
-            });
-          }
+          if (data.error) throw new Error(data.error);
+          setWordInfo(data);
           setLoading(false);
         })
         .catch(err => {
@@ -77,19 +71,18 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
       <div className="flex flex-wrap gap-2">
         {description.split(',').map((segment, idx) => {
           const trimmed = segment.trim();
-          let colorStyle = { color: 'rgba(0,0,0,0.8)', backgroundColor: 'rgba(0,0,0,0.05)', borderColor: 'transparent' };
+          let colorClass = "text-foreground/80 bg-foreground/5 border-transparent";
           
           if (trimmed.toLowerCase().includes('noun')) {
-            colorStyle = { color: '#3E4A2E', backgroundColor: 'rgba(62, 74, 46, 0.1)', borderColor: 'rgba(62, 74, 46, 0.2)' };
+            colorClass = "text-brand-olive bg-brand-olive/10 border-brand-olive/20";
           } else if (trimmed.toLowerCase().includes('verb')) {
-            colorStyle = { color: '#D2B48C', backgroundColor: 'rgba(210, 180, 140, 0.1)', borderColor: 'rgba(210, 180, 140, 0.2)' };
+            colorClass = "text-brand-clay bg-brand-clay/10 border-brand-clay/20";
           }
           
           return (
             <span 
               key={idx} 
-              style={colorStyle}
-              className="rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider"
+              className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${colorClass}`}
             >
               {trimmed}
             </span>
@@ -111,7 +104,7 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
         <div className="flex gap-8" dir="rtl">
           {letters.map((letter, idx) => (
             <div key={idx} className="flex flex-col items-center gap-3">
-              <span className="font-amiri text-5xl font-bold" style={{ fontSize: '48px', color: '#3E4A2E' }}>
+              <span className="font-amiri text-5xl font-bold text-brand-olive" style={{ fontSize: '48px' }}>
                 {letter}
               </span>
               <TajweedPlayer soundName={letter} />
@@ -132,7 +125,7 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
 
       {/* Drawer */}
       <aside 
-        className={`fixed right-0 top-0 z-[70] h-full w-full max-w-md bg-background shadow-2xl transition-transform duration-500 ease-in-out sm:border-l sm:border-brand-border ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed end-0 top-0 z-[70] h-full w-full max-w-md bg-background shadow-2xl transition-transform duration-500 ease-in-out sm:border-s sm:border-brand-border ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
         <div className="flex h-full flex-col p-8">
           <header className="flex items-center justify-between border-b border-brand-border pb-6">
@@ -192,9 +185,9 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
                   {loading ? (
                     <div className="h-8 w-full bg-brand-border/20 rounded animate-shimmer" />
                   ) : (
-                    <p className="text-2xl font-medium text-foreground">
-                      {wordInfo?.translation?.text || analysis.meaning || "Click for full lexicon analysis."}
-                    </p>
+                    <div className="text-2xl font-medium text-foreground">
+                      {parse(wordInfo?.translation?.text || analysis.meaning || "Click for full lexicon analysis.")}
+                    </div>
                   )}
                 </div>
               </section>

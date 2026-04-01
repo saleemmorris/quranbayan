@@ -36,9 +36,9 @@ const TAJWEED_RULES: TajweedRule[] = [
 
 const TAJWEED_COLORS = {
   madd: 'text-[#2196F3]',
-  ghunnah: 'text-[#4CAF50]',
-  qalqalah: 'text-[#FF5722]',
-  heavy: 'text-[#795548]', // Changed Heavy to Brown to avoid conflict with Qalqalah
+  ghunnah: 'text-brand-olive',
+  qalqalah: 'text-brand-clay',
+  heavy: 'text-[#795548]',
 };
 
 /**
@@ -47,7 +47,8 @@ const TAJWEED_COLORS = {
  */
 export default function TajweedText({ transliteration }: { transliteration: string }) {
   const playSound = (soundName: string) => {
-    const audio = new Audio(`/assets/audio/tajweed/${soundName}.mp3`);
+    // Audio path updated to /audio/tajweed/ as per project structure
+    const audio = new Audio(`/audio/tajweed/${soundName}.mp3`);
     audio.play().catch(() => {
       // Fallback or warning if audio is missing
       console.warn(`Tajweed sound not found: ${soundName}`);

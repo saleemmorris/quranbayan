@@ -99,7 +99,7 @@ export default function SurahStudyView({ chapter, verses }: SurahStudyViewProps)
                 className="group flex flex-wrap items-center justify-start gap-x-1.5 gap-y-8 border-b border-brand-border/10 pb-16 last:border-0 last:pb-0"
               >
                 <div 
-                  className="ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-brand-clay/20 bg-brand-clay/5 text-sm font-bold text-brand-clay transition-colors group-hover:border-brand-olive/30 group-hover:bg-brand-olive/5"
+                  className="ms-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-brand-clay/20 bg-brand-clay/5 text-sm font-bold text-brand-clay transition-colors group-hover:border-brand-olive/30 group-hover:bg-brand-olive/5"
                   dir="ltr"
                 >
                   {verse.verse_number}

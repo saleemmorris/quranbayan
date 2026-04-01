@@ -24,7 +24,7 @@ export default function NavSidebar({ isOpen, onClose }: NavSidebarProps) {
 
       {/* Sidebar */}
       <aside 
-        className={`fixed left-0 top-0 z-[70] h-full w-full max-w-xs bg-background shadow-2xl transition-transform duration-500 ease-in-out border-r border-brand-border ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed start-0 top-0 z-[70] h-full w-full max-w-xs bg-background shadow-2xl transition-transform duration-500 ease-in-out border-e border-brand-border ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className="flex h-full flex-col p-6">
           <header className="flex items-center justify-between border-b border-brand-border pb-6">

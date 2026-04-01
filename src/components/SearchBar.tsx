@@ -142,13 +142,13 @@ export default function SearchBar({
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => setIsFocused(true)}
             placeholder={isFocused ? (isHeader ? "Search" : "") : shortPlaceholder} 
-            className={`w-full rounded-full border border-brand-border bg-brand-card px-6 py-4 text-foreground shadow-sm focus:border-brand-clay focus:outline-none focus:ring-1 focus:ring-brand-clay transition-all pr-32 ${
-              isHeader && !isFocused ? 'py-2 px-4 pr-10 placeholder:text-transparent sm:placeholder:text-foreground/70' : ''
+            className={`w-full rounded-full border border-brand-border bg-brand-card px-6 py-4 text-foreground shadow-sm focus:border-brand-clay focus:outline-none focus:ring-1 focus:ring-brand-clay transition-all pe-32 ${
+              isHeader && !isFocused ? 'py-2 px-4 pe-10 placeholder:text-transparent sm:placeholder:text-foreground/70' : ''
             } ${isHeader && isFocused ? 'placeholder:text-transparent sm:placeholder:text-foreground/70' : ''} ${!isHeader && isFocused ? 'py-5 px-8' : ''}`}
           />
           {/* Animated scrolling placeholder for focused state */}
           {isFocused && query === "" && !isHeader && (
-            <div className="pointer-events-none absolute inset-y-0 left-6 right-32 flex items-center overflow-hidden">
+            <div className="pointer-events-none absolute inset-y-0 start-6 end-32 flex items-center overflow-hidden">
               <span className="animate-marquee inline-block text-foreground/70 text-sm md:text-base">
                 {fullPlaceholder}
               </span>
@@ -157,8 +157,8 @@ export default function SearchBar({
         </div>
         <button 
           type="submit"
-          className={`absolute right-2 flex items-center gap-2 rounded-full bg-brand-olive text-sm font-semibold text-white hover:opacity-90 transition-opacity cursor-pointer ${
-            isHeader && !isFocused ? 'p-2' : 'p-2 sm:px-6 sm:py-3 top-1/2 -translate-y-1/2 mr-1'
+          className={`absolute end-2 flex items-center gap-2 rounded-full bg-brand-olive text-sm font-semibold text-white hover:opacity-90 transition-opacity cursor-pointer ${
+            isHeader && !isFocused ? 'p-2' : 'p-2 sm:px-6 sm:py-3 top-1/2 -translate-y-1/2 me-1'
           }`}
         >
           <Search className="h-4 w-4" strokeWidth={2.5} />
@@ -168,7 +168,7 @@ export default function SearchBar({
 
       {/* Autocomplete Dropdown */}
       {isFocused && suggestions.length > 0 && (
-        <div className={`absolute left-0 right-0 z-50 mt-2 overflow-hidden rounded-xl border border-brand-border bg-brand-card shadow-xl backdrop-blur-sm max-w-7xl mx-auto ${
+        <div className={`absolute inset-x-0 z-50 mt-2 overflow-hidden rounded-xl border border-brand-border bg-brand-card shadow-xl backdrop-blur-sm max-w-7xl mx-auto ${
           isHeader || !isHeader ? 'top-full' : ''
         } ${!isHeader ? 'mt-4' : 'mt-2'}`}>
           <ul className="py-2">
