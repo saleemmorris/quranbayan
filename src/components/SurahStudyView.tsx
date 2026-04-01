@@ -5,33 +5,10 @@ import WordToken from "@/components/WordToken";
 import RootAnalysisDrawer from "@/components/RootAnalysisDrawer";
 import { StudyProvider } from "@/lib/StudyContext";
 import StudyToggles from "@/components/StudyToggles";
-
-interface Word {
-  id: number;
-  text_uthmani: string;
-  transliteration?: {
-    text: string;
-  };
-  location: string;
-}
-
-interface Verse {
-  id: number;
-  verse_number: number;
-  words: Word[];
-}
+import { Chapter, Verse, Word } from '@/types/quran';
 
 interface SurahStudyViewProps {
-  chapter: {
-    id: number;
-    name_complex: string;
-    name_arabic: string;
-    revelation_place: string;
-    verses_count: number;
-    translated_name: {
-      name: string;
-    };
-  };
+  chapter: Chapter;
   verses: Verse[];
 }
 

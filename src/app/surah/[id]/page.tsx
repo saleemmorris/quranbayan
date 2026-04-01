@@ -3,52 +3,24 @@ import Header from "@/components/Header";
 import SurahStudyView from "@/components/SurahStudyView";
 import { Metadata } from 'next';
 import JsonLd from "@/components/JsonLd";
-
-interface Word {
-  id: number;
-  text_uthmani: string;
-  transliteration?: {
-    text: string;
-  };
-  location: string;
-}
-
-interface Verse {
-  id: number;
-  verse_number: number;
-  words: Word[];
-}
-
-interface SurahData {
-  chapter: {
-    id: number;
-    name_complex: string;
-    name_arabic: string;
-    revelation_place: string;
-    verses_count: number;
-    translated_name: {
-      name: string;
-    };
-  };
-  verses: Verse[];
-}
+import { SurahData, Verse, ChapterResponse, VersesByChapterResponse } from '@/types/quran';
 
 async function getSurahData(id: string): Promise<SurahData> {
   const [chapterRes, versesRes] = await Promise.all([
     fetch(`https://api.quran.com/api/v4/chapters/${id}?language=en`),
-    fetch(`https://api.quran.com/api/v4/verses/by_chapter/${id}?words=true&word_fields=text_uthmani,transliteration,location&per_page=all`)
+    fetch(`https://api.quran.com/api/v4/verses/by_chapter/${id}?words=true&word_fields=text_uthmani,transliteration,location,root_template,grammar_description&per_page=all`)
   ]);
 
   if (!chapterRes.ok || !versesRes.ok) {
     throw new Error(`Failed to fetch surah data for ID: ${id}`);
   }
 
-  const chapterData = await chapterRes.json();
-  const versesData = await versesRes.json();
+  const chapterData: ChapterResponse = await chapterRes.json();
+  const versesData: VersesByChapterResponse = await versesRes.json();
 
   return {
     chapter: chapterData.chapter,
-    verses: (versesData.verses || []) as Verse[]
+    verses: versesData.verses || []
   };
 }
 

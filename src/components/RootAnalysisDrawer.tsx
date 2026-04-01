@@ -1,119 +1,34 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { X } from 'lucide-react';
 import TajweedText from './TajweedText';
-import TajweedPlayer from './TajweedPlayer';
-import parse from 'html-react-parser';
+import WordAnalysis from './WordAnalysis';
 
-interface WordAnalysis {
+interface WordAnalysisData {
   word: string;
   transliteration: string;
   location: string;
   wordId?: number;
-  root?: string;
   meaning?: string;
-}
-
-interface FetchedWordInfo {
-  root_modern?: string;
-  grammar_description?: string;
-  translation?: {
-    text: string;
-  };
 }
 
 interface RootAnalysisDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  analysis: WordAnalysis | null;
+  analysis: WordAnalysisData | null;
 }
 
 /**
  * RootAnalysisDrawer provides word-level linguistic analysis.
  * Follows Zaytuna design system (Olive & Clay).
- * Fetches root and grammar data from Quran.com API on click.
+ * Uses WordAnalysis component for fetching and rendering data.
  */
 export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAnalysisDrawerProps) {
-  const [wordInfo, setWordInfo] = useState<FetchedWordInfo | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (isOpen && analysis?.location) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setLoading(true);
-      // Extract verse key (e.g., "1:1" from "1:1:1")
-      const verseKey = analysis.location.split(':').slice(0, 2).join(':');
-      
-      fetch(`/api/word-analysis?verseKey=${verseKey}&location=${analysis.location}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.error) throw new Error(data.error);
-          setWordInfo(data);
-          setLoading(false);
-        })
-        .catch(err => {
-          console.error("Failed to fetch word analysis:", err);
-          setLoading(false);
-        });
-    } else if (!isOpen) {
-      setWordInfo(null);
-    }
-  }, [isOpen, analysis?.location]);
-
   if (!analysis) return null;
 
-  // Map grammar segments to Zaytuna colors (Olive for Nouns, Clay for Verbs)
-  const renderGrammarSegments = (description?: string) => {
-    if (!description) return null;
-    
-    return (
-      <div className="flex flex-wrap gap-2">
-        {description.split(',').map((segment, idx) => {
-          const trimmed = segment.trim();
-          let colorClass = "text-foreground/80 bg-foreground/5 border-transparent";
-          
-          if (trimmed.toLowerCase().includes('noun')) {
-            colorClass = "text-brand-olive bg-brand-olive/10 border-brand-olive/20";
-          } else if (trimmed.toLowerCase().includes('verb')) {
-            colorClass = "text-brand-clay bg-brand-clay/10 border-brand-clay/20";
-          }
-          
-          return (
-            <span 
-              key={idx} 
-              className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${colorClass}`}
-            >
-              {trimmed}
-            </span>
-          );
-        })}
-      </div>
-    );
-  };
-
-  const renderRootDisplay = (root?: string) => {
-    if (!root) return null;
-    
-    // Split root into individual letters (e.g. "ب س م" -> ["ب", "س", "م"])
-    const letters = root.split(' ').filter(l => l.trim().length > 0);
-    
-    return (
-      <div className="flex flex-col items-center gap-6 border-b border-brand-border/50 pb-8">
-        <span className="text-xs font-bold uppercase tracking-widest text-brand-clay/80">3-Letter Root</span>
-        <div className="flex gap-8" dir="rtl">
-          {letters.map((letter, idx) => (
-            <div key={idx} className="flex flex-col items-center gap-3">
-              <span className="font-amiri text-5xl font-bold text-brand-olive" style={{ fontSize: '48px' }}>
-                {letter}
-              </span>
-              <TajweedPlayer soundName={letter} />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
+  // Extract verse key (e.g., "1:1" from "1:1:1")
+  const verseKey = analysis.location.split(':').slice(0, 2).join(':');
 
   return (
     <>
@@ -154,43 +69,8 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
               </div>
             </div>
 
-            <div className="mt-16 space-y-12">
-              <section>
-                <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-brand-olive/80">Grammar & Root</h3>
-                <div className={`rounded-2xl border border-brand-border bg-brand-card/30 p-6 min-h-[160px] flex flex-col justify-center transition-all duration-300 ${loading ? 'animate-pulse bg-brand-border/10' : ''}`}>
-                  {loading ? (
-                    <div className="flex flex-col items-center justify-center gap-4">
-                      <div className="h-12 w-32 bg-brand-border/20 rounded-lg animate-shimmer" />
-                      <div className="h-4 w-48 bg-brand-border/20 rounded-full animate-shimmer" />
-                    </div>
-                  ) : wordInfo ? (
-                    <div className="space-y-6">
-                      {renderRootDisplay(wordInfo.root_modern)}
-                      <div className="space-y-3">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-foreground/70">Linguistic Breakdown</span>
-                        {renderGrammarSegments(wordInfo.grammar_description)}
-                      </div>
-                    </div>
-                  ) : (
-                    <p className="text-lg text-foreground/80 leading-relaxed italic">
-                      Linguistic analysis unavailable for this token.
-                    </p>
-                  )}
-                </div>
-              </section>
-
-              <section>
-                <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-brand-olive/80">English Meaning</h3>
-                <div className={`rounded-2xl border border-brand-border bg-brand-card/30 p-6 transition-all duration-300 ${loading ? 'animate-pulse bg-brand-border/10' : ''}`}>
-                  {loading ? (
-                    <div className="h-8 w-full bg-brand-border/20 rounded animate-shimmer" />
-                  ) : (
-                    <div className="text-2xl font-medium text-foreground">
-                      {parse(wordInfo?.translation?.text || analysis.meaning || "Click for full lexicon analysis.")}
-                    </div>
-                  )}
-                </div>
-              </section>
+            <div className="mt-16">
+              <WordAnalysis verseKey={verseKey} location={analysis.location} />
             </div>
           </div>
 

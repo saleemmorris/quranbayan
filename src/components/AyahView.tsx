@@ -4,15 +4,7 @@ import React, { useEffect, useState } from 'react';
 import WordToken from "@/components/WordToken";
 import { StudyProvider } from "@/lib/StudyContext";
 import RootAnalysisDrawer from "@/components/RootAnalysisDrawer";
-
-interface Word {
-  id: number;
-  text_uthmani: string;
-  transliteration?: {
-    text: string;
-  };
-  location: string;
-}
+import { Word, VersesByKeyResponse } from '@/types/quran';
 
 interface AyahData {
   words: Word[];
@@ -43,9 +35,9 @@ export default function AyahView({ verseKey = "1:1", arabicText }: AyahViewProps
     if (verseKey) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(true);
-      fetch(`https://api.quran.com/api/v4/verses/by_key/${verseKey}?words=true&word_fields=text_uthmani,transliteration,location`)
+      fetch(`https://api.quran.com/api/v4/verses/by_key/${verseKey}?words=true&word_fields=text_uthmani,transliteration,location,root_template,grammar_description`)
         .then(res => res.json())
-        .then(json => {
+        .then((json: VersesByKeyResponse) => {
           setData({ words: json.verse.words });
           setLoading(false);
         })

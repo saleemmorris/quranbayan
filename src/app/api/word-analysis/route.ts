@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { VersesByKeyResponse, Word } from '@/types/quran';
 
 export const runtime = 'edge';
 
@@ -28,23 +29,25 @@ export async function GET(request: NextRequest) {
     const { verseKey, location } = result.data;
     
     // Fetch data from Quran.com v4
+    // Request root_template, root_modern, grammar_description, and translation
     const response = await fetch(
-      `https://api.quran.com/api/v4/verses/by_key/${verseKey}?words=true&word_fields=root_modern,grammar_description,translation`
+      `https://api.quran.com/api/v4/verses/by_key/${verseKey}?words=true&word_fields=root_template,root_modern,grammar_description,translation`
     );
 
     if (!response.ok) {
       throw new Error('Failed to fetch from Quran.com API');
     }
 
-    const data = await response.json();
-    const words = data.verse?.words || [];
-    const matchedWord = words.find((w: any) => w.location === location);
+    const data: VersesByKeyResponse = await response.json();
+    const words: Word[] = data.verse?.words || [];
+    const matchedWord = words.find((w: Word) => w.location === location);
 
     if (!matchedWord) {
       return NextResponse.json({ error: 'Word not found' }, { status: 404 });
     }
 
     return NextResponse.json({
+      root_template: matchedWord.root_template,
       root_modern: matchedWord.root_modern,
       grammar_description: matchedWord.grammar_description,
       translation: matchedWord.translation,

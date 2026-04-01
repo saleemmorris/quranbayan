@@ -38,7 +38,7 @@ export default function NavSidebar({ isOpen, onClose }: NavSidebarProps) {
             </button>
           </header>
 
-          <nav className="mt-8 flex-1">
+          <nav className="mt-8 flex-1 rounded-2xl bg-brand-clay/5 p-4 shadow-inner">
             <ul className="space-y-2">
               <li>
                 <Link 
