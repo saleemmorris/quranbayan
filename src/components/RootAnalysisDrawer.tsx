@@ -73,21 +73,6 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
               <WordAnalysis verseKey={verseKey} location={analysis.location} />
             </div>
           </div>
-
-          <footer className="mt-auto border-t border-brand-border pt-6">
-            <button 
-              onClick={() => {
-                const parts = analysis.location.split(':');
-                if (parts.length >= 2) {
-                  const [chapter, verse] = parts;
-                  window.open(`https://corpus.quran.com/wordbyword.jsp?chapter=${chapter}&verse=${verse}#(${analysis.location})`, '_blank');
-                }
-              }}
-              className="w-full rounded-xl bg-brand-olive py-4 text-sm font-bold text-white shadow-lg hover:opacity-95 transition-all"
-            >
-              View Full Lexicon Entry
-            </button>
-          </footer>
         </div>
       </aside>
     </>

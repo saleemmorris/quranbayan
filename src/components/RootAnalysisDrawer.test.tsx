@@ -1,31 +1,32 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import RootAnalysisDrawer from './RootAnalysisDrawer';
-import '@testing-library/jest-dom';
 
-// Mock components that might cause issues
-jest.mock('./WordAnalysis', () => {
-  return function DummyWordAnalysis() {
-    return <div data-testid="word-analysis">Word Analysis Component</div>;
-  };
-});
+// Mock Lucide icons
+jest.mock('lucide-react', () => ({
+  X: () => <div data-testid="x-icon" />,
+}));
 
-jest.mock('./TajweedText', () => {
-  return function DummyTajweedText({ transliteration }: { transliteration: string }) {
-    return <span>{transliteration}</span>;
-  };
-});
+// Mock TajweedText component
+jest.mock('./TajweedText', () => ({
+  __esModule: true,
+  default: ({ transliteration }: { transliteration: string }) => <span>{transliteration}</span>,
+}));
 
-describe('RootAnalysisDrawer Lexicon Link', () => {
-  const mockAnalysis = {
-    word: "بِسْمِ",
-    transliteration: "bis'mi",
-    location: "1:1:1",
-    wordId: 1
-  };
+// Mock WordAnalysis component
+jest.mock('./WordAnalysis', () => ({
+  __esModule: true,
+  default: ({ location }: { location: string }) => <div data-testid="word-analysis">Analysis for {location}</div>,
+}));
 
-  beforeAll(() => {
-    // Mock window.open
+const mockAnalysis = {
+  word: 'بِسْمِ',
+  transliteration: 'bismi',
+  location: '1:1:1',
+};
+
+describe('RootAnalysisDrawer', () => {
+  beforeEach(() => {
     global.open = jest.fn();
   });
 
@@ -33,21 +34,34 @@ describe('RootAnalysisDrawer Lexicon Link', () => {
     jest.clearAllMocks();
   });
 
-  it('should open the correct corpus.quran.com link when Lexicon button is clicked', () => {
+  it('renders correctly when open', () => {
     render(
-      <RootAnalysisDrawer 
-        isOpen={true} 
-        onClose={() => {}} 
-        analysis={mockAnalysis} 
+      <RootAnalysisDrawer
+        isOpen={true}
+        onClose={() => {}}
+        analysis={mockAnalysis}
       />
     );
 
-    const lexiconButton = screen.getByText(/View Full Lexicon Entry/i);
-    fireEvent.click(lexiconButton);
+    expect(screen.getByText('Word Analysis')).toBeInTheDocument();
+    expect(screen.getByText('بِسْمِ')).toBeInTheDocument();
+    expect(screen.getByText('bismi')).toBeInTheDocument();
+    expect(screen.getByText(/Location 1:1:1/i)).toBeInTheDocument();
+    expect(screen.getByTestId('word-analysis')).toBeInTheDocument();
+  });
 
-    expect(global.open).toHaveBeenCalledWith(
-      'https://corpus.quran.com/wordbyword.jsp?chapter=1&verse=1#(1:1:1)',
-      '_blank'
+  it('calls onClose when close button is clicked', () => {
+    const onClose = jest.fn();
+    render(
+      <RootAnalysisDrawer
+        isOpen={true}
+        onClose={onClose}
+        analysis={mockAnalysis}
+      />
     );
+
+    const closeButton = screen.getByLabelText('Close Analysis');
+    fireEvent.click(closeButton);
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

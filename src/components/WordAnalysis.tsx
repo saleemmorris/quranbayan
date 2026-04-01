@@ -146,18 +146,7 @@ export default function WordAnalysis({ verseKey, location }: WordAnalysisProps) 
             {wordData.translation?.text ? (
               parse(wordData.translation.text)
             ) : (
-              <button 
-                onClick={() => {
-                  const parts = location.split(':');
-                  if (parts.length >= 2) {
-                    const [chapter, verse] = parts;
-                    window.open(`https://corpus.quran.com/wordbyword.jsp?chapter=${chapter}&verse=${verse}#(${location})`, '_blank');
-                  }
-                }}
-                className="text-brand-olive hover:underline underline-offset-4 cursor-pointer text-lg font-semibold"
-              >
-                Click for full lexicon analysis.
-              </button>
+              'Meaning not available.'
             )}
           </div>
         </div>

@@ -49,7 +49,7 @@ describe('WordAnalysis Component', () => {
     expect(screen.getByText(/In \(the\) name/i)).toBeInTheDocument();
   });
 
-  it('should render lexicon link when translation is missing', async () => {
+  it('should render fallback message when translation is missing', async () => {
     const mockApiResponse = {
       verse: {
         id: 1,
@@ -74,16 +74,8 @@ describe('WordAnalysis Component', () => {
     render(<WordAnalysis verseKey="1:1" location="1:1:1" />);
 
     await waitFor(() => {
-      expect(screen.getByText(/Click for full lexicon analysis/i)).toBeInTheDocument();
+      expect(screen.getByText(/Meaning not available./i)).toBeInTheDocument();
     });
-    
-    const lexiconButton = screen.getByRole('button', { name: /Click for full lexicon analysis/i });
-    fireEvent.click(lexiconButton);
-
-    expect(global.open).toHaveBeenCalledWith(
-      'https://corpus.quran.com/wordbyword.jsp?chapter=1&verse=1#(1:1:1)',
-      '_blank'
-    );
   });
 
   it('should render RootDisplay when root is present', async () => {
