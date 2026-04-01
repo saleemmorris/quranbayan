@@ -5,7 +5,7 @@
   --background: #F7F8F2;      /* Parchment */
   --foreground: #3E4A2E;      /* Olive */
   --color-olive: #3E4A2E;     /* Olive */
-  --color-clay: #D2B48C;      /* Clay (Tan) */
+  --color-clay: #7A5C33;      /* Deep Tan (Accessible on Parchment) */
   --color-card: #ffffff;
   --color-border: #e2e4d8;
 }
@@ -15,7 +15,7 @@
   --background: #1C1F16;      /* Dark Moss */
   --foreground: #C5D1AF;      /* Sage */
   --color-olive: #C5D1AF;     /* Sage */
-  --color-clay: #4B3B2F;      /* Earth (Darker Clay) */
+  --color-clay: #E5D3B3;      /* Light Sand (Accessible on Dark Moss) */
   --color-card: #25291c;
   --color-border: #323828;
 }

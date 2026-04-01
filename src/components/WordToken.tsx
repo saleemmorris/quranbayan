@@ -37,7 +37,7 @@ export default function WordToken({ arabic, transliteration, onClick }: WordToke
         
         {/* DIN 31635 Transliteration using interactive TajweedText */}
         <div 
-          className={`text-[11px] font-medium text-brand-clay/90 leading-tight transition-opacity duration-300 ${showTransliteration ? 'opacity-100' : 'opacity-0'}`} 
+          className={`text-xs font-bold text-brand-clay leading-tight transition-opacity duration-300 ${showTransliteration ? 'opacity-100' : 'opacity-0'}`} 
           dir="ltr"
         >
           <TajweedText transliteration={transliteration} />
