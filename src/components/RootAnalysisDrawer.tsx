@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { X } from 'lucide-react';
+import TajweedText from './TajweedText';
 
 interface WordAnalysis {
   word: string;
@@ -55,8 +56,8 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
                 {analysis.word.normalize('NFC')}
               </span>
               <div className="flex flex-col gap-2">
-                <span className="transliteration text-2xl font-semibold text-brand-clay italic">
-                  {analysis.transliteration}
+                <span className="text-2xl font-semibold text-brand-clay italic">
+                  <TajweedText transliteration={analysis.transliteration} />
                 </span>
                 <span className="text-sm font-bold uppercase tracking-widest text-foreground/40">
                   Location {analysis.location}

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useStudy } from '@/lib/StudyContext';
+import TajweedText from './TajweedText';
 
 interface WordTokenProps {
   arabic: string;
@@ -34,13 +35,13 @@ export default function WordToken({ arabic, transliteration, onClick }: WordToke
           {normalizedArabic}
         </span>
         
-        {/* DIN 31635 Transliteration in Clay color beneath it */}
-        <span 
-          className={`transliteration text-[11px] font-medium italic text-brand-clay/90 leading-tight transition-opacity duration-300 ${showTransliteration ? 'opacity-100' : 'opacity-0'}`} 
+        {/* DIN 31635 Transliteration using interactive TajweedText */}
+        <div 
+          className={`text-[11px] font-medium text-brand-clay/90 leading-tight transition-opacity duration-300 ${showTransliteration ? 'opacity-100' : 'opacity-0'}`} 
           dir="ltr"
         >
-          {transliteration}
-        </span>
+          <TajweedText transliteration={transliteration} />
+        </div>
       </div>
     </div>
   );
