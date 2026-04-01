@@ -16,7 +16,7 @@ export default function StudyToggles() {
   } = useStudy();
 
   return (
-    <div className="flex items-center gap-6 rounded-full border border-brand-border bg-background/50 px-6 py-3 backdrop-blur-sm">
+    <div className="flex items-center gap-6 rounded-full border border-brand-border bg-background/95 px-6 py-3 backdrop-blur-md shadow-sm">
       <div className="flex items-center gap-2">
         <label className="flex cursor-pointer items-center gap-2">
           <input 

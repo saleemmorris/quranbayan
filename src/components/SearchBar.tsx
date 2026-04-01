@@ -130,7 +130,7 @@ export default function SearchBar({
       ref={searchRef} 
       className={`relative transition-all duration-500 ease-in-out z-50 ${
         isHeader 
-          ? (isFocused ? 'fixed sm:absolute inset-x-0 top-0 h-16 sm:h-full bg-background sm:bg-transparent flex items-center px-4 sm:px-0 lg:px-0 border-b sm:border-b-0 border-brand-border' : 'w-auto') 
+          ? (isFocused ? 'fixed sm:absolute inset-x-0 top-0 h-16 sm:h-full bg-background/95 sm:bg-background/95 flex items-center px-4 sm:px-0 lg:px-0 border-b sm:border-b-0 border-brand-border' : 'w-auto') 
           : (isFocused ? 'fixed inset-x-0 top-0 h-24 bg-background/95 backdrop-blur-md flex items-center px-4 sm:px-6 lg:px-8 border-b border-brand-border' : 'w-full max-w-md')
       }`}
     >
@@ -168,7 +168,7 @@ export default function SearchBar({
 
       {/* Autocomplete Dropdown */}
       {isFocused && suggestions.length > 0 && (
-        <div className={`absolute inset-x-0 z-50 mt-2 overflow-hidden rounded-xl border border-brand-border bg-brand-card shadow-xl backdrop-blur-sm max-w-7xl mx-auto ${
+        <div className={`absolute inset-x-0 z-50 mt-2 overflow-hidden rounded-xl border border-brand-border bg-background shadow-2xl backdrop-blur-xl max-w-7xl mx-auto ${
           isHeader || !isHeader ? 'top-full' : ''
         } ${!isHeader ? 'mt-4' : 'mt-2'}`}>
           <ul className="py-2">

@@ -88,9 +88,8 @@ export default function SurahStudyView({ chapter, verses }: SurahStudyViewProps)
             </div>
           </header>
 
-          {/* Verse Reading Container */}
           <div 
-            className="mx-auto max-w-5xl space-y-16 rounded-[2.5rem] border border-brand-border/40 bg-background/50 p-6 shadow-sm backdrop-blur-sm sm:p-16"
+            className="mx-auto max-w-5xl space-y-16 rounded-[2.5rem] border border-brand-border/40 bg-background/95 p-6 shadow-sm backdrop-blur-md sm:p-16"
             dir="rtl"
           >
             {verses.map((verse) => (

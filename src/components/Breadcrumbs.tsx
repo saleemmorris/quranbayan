@@ -39,7 +39,7 @@ export default function Breadcrumbs() {
   if (pathname === '/') return null;
 
   return (
-    <nav aria-label="Breadcrumb" className="border-t border-brand-border/40 bg-background/40 py-2.5">
+    <nav aria-label="Breadcrumb" className="border-t border-brand-border/40 bg-background/95 py-2.5 backdrop-blur-md">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <ol className="flex flex-wrap items-center gap-2 text-xs font-medium tracking-wide">
           {breadcrumbs.map((breadcrumb, index) => {
