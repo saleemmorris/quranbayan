@@ -7,11 +7,12 @@ import { z } from 'zod';
 export const WordSchema = z.object({
   id: z.number(),
   position: z.number(),
-  text_uthmani: z.string(),
+  text: z.string().optional(),
+  text_uthmani: z.string().optional(),
   root: z.string().nullable().optional(),
   grammar_description: z.string().nullable().optional(),
   translation: z.object({ text: z.string() }).optional(),
-  transliteration: z.object({ text: z.string() }).optional(),
+  transliteration: z.object({ text: z.string().nullable().optional() }).optional(),
   location: z.string().optional(),
 });
 

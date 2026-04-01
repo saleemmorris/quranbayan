@@ -46,7 +46,10 @@ export default function WordAnalysis({ verseKey, location }: WordAnalysisProps) 
         }
 
         const matchedWord = result.data.verse.words.find(
-          (w) => `${verseKey}:${w.position}` === location || w.location === location
+          (w) => {
+            const wordLocation = w.location || `${verseKey}:${w.position}`;
+            return wordLocation === location;
+          }
         );
 
         if (!matchedWord) {
