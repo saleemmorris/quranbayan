@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm run build:phonetics",
+    "build:phonetics": "npx tsx scripts/build-phonetic-db.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
