@@ -24,6 +24,9 @@ interface RootAnalysisDrawerProps {
  * RootAnalysisDrawer provides word-level linguistic analysis.
  * Follows Zaytuna design system (Olive & Clay).
  * Includes Word-Level Audio Sync (SSS_AAA_WWW protocol).
+ * 
+ * Audit Note: Marked with 'use client' and handles Audio playback 
+ * via user-triggered events to satisfy browser autoplay policies.
  */
 export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAnalysisDrawerProps) {
   if (!analysis) return null;
@@ -32,7 +35,11 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
   const locationParts = analysis.location.split(':');
   const verseKey = locationParts.slice(0, 2).join(':');
 
-  const handlePlayWord = (e: React.MouseEvent) => {
+  /**
+   * Triggers word-level audio playback.
+   * Includes detailed error logging for network/asset failures.
+   */
+  const handlePlayWord = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (locationParts.length === 3) {
       const surah = parseInt(locationParts[0], 10);
@@ -40,10 +47,19 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
       const word = parseInt(locationParts[2], 10);
       
       const audioUrl = getWordAudioUrl(surah, ayah, word);
-      const audio = new Audio(audioUrl);
-      audio.play().catch((err) => {
-        console.warn(`Word audio not found or failed to play: ${audioUrl}`, err);
-      });
+      
+      try {
+        const audio = new Audio(audioUrl);
+        
+        // Add specific event listener for detailed load failure logging
+        audio.onerror = () => {
+          console.error(`Audio Load Failed: [${audioUrl}] - check path in /public/audio/words/`);
+        };
+
+        await audio.play();
+      } catch (err) {
+        console.error(`Audio Playback Failed: [${audioUrl}]`, err);
+      }
     }
   };
 

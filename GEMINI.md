@@ -85,11 +85,17 @@
 - **Padding Logic:** Surah, Ayah, and Word index are each padded to exactly 3 digits with leading zeros.
 - **Trigger:** Accessible via the `Volume2` icon in the `RootAnalysisDrawer` (Word Analysis view).
 
-## 12. Build-Step & Asset Management
+## 12. Live Site Audio Debug (Audit Results)
+- **Asset Pathing:** Verified absolute paths `/audio/words/SSS_AAA_WWW.mp3` in `audioUtils.ts`.
+- **CSP Fix:** Updated `next.config.ts` to allow `media-src 'self' blob:` and expanded `connect-src` for API stability.
+- **Hydration:** Confirmed `RootAnalysisDrawer` uses `'use client'` and user-event-driven `Audio` instantiation to bypass autoplay blocks.
+- **Error Handling:** Implemented `audio.onerror` and `try-catch` in `handlePlayWord` for detailed "Audio Load Failed" console logging.
+
+## 13. Build-Step & Asset Management
 - **Automation:** Use `scripts/download-makharij.js` (or manual ZIP) to populate `/public/audio/tajweed/`.
 - **Prebuild:** Ensure `package.json` includes `prebuild` scripts if assets are being fetched dynamically.
 
-## 13. Next.js 16.2+ & React 19 Protocols
+## 14. Next.js 16.2+ & React 19 Protocols
 - **Component Defaults:** Default to **Server Components**. Move `'use client'` to the lowest possible "leaf" components.
 - **Streaming:** Implement **Streaming with Suspense** for API-heavy data (e.g., Root Analysis).
 - **Data Fetching:** Use **Async Server Components**. Leverage native `fetch` caching. 
