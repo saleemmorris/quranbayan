@@ -1,109 +1,94 @@
 'use client';
 
 import React from 'react';
+import { PHONETIC_INDEX } from '@/constants/phoneticMap';
 
 /**
- * TajweedRule maps transliteration patterns to audio filenames and visual styles.
- * Aligned with DIN 31635 and the 1_alif...30_yaa audio assets.
- */
-interface TajweedRule {
-  pattern: string;
-  sound: string;
-  type: 'madd' | 'heavy' | 'ghunnah' | 'qalqalah' | 'letter';
-}
-
-const TAJWEED_RULES: TajweedRule[] = [
-  // Madd (Long Vowels & Carriers)
-  { pattern: 'ā', sound: '1_alif', type: 'madd' },
-  { pattern: 'ī', sound: '30_yaa', type: 'madd' },
-  { pattern: 'ū', sound: '27_waw', type: 'madd' },
-  { pattern: 'a', sound: '1_alif', type: 'madd' },
-  { pattern: 'i', sound: '30_yaa', type: 'madd' },
-  { pattern: 'u', sound: '27_waw', type: 'madd' },
-  
-  // Letters mapped to phonetic assets
-  { pattern: "'", sound: '28_hamzah', type: 'letter' },
-  { pattern: 'b', sound: '2_baa', type: 'qalqalah' },
-  { pattern: 't', sound: '3_taa', type: 'qalqalah' },
-  { pattern: 'ṯ', sound: '4_thaa', type: 'letter' },
-  { pattern: 'j', sound: '5_jeem', type: 'qalqalah' },
-  { pattern: 'ḥ', sound: '6_haa', type: 'heavy' },
-  { pattern: 'ḫ', sound: '7_khaa', type: 'heavy' },
-  { pattern: 'd', sound: '8_daal', type: 'qalqalah' },
-  { pattern: 'ḏ', sound: '9_zaal', type: 'letter' },
-  { pattern: 'r', sound: '10_raa', type: 'heavy' },
-  { pattern: 'z', sound: '11_zaa', type: 'letter' },
-  { pattern: 's', sound: '12_seen', type: 'letter' },
-  { pattern: 'š', sound: '13_sheen', type: 'letter' },
-  { pattern: 'ṣ', sound: '14_saad', type: 'heavy' },
-  { pattern: 'ḍ', sound: '15_daad', type: 'heavy' },
-  { pattern: 'ṭ', sound: '16_taah', type: 'heavy' },
-  { pattern: 'ẓ', sound: '17_zhaa', type: 'heavy' },
-  { pattern: 'ʿ', sound: '18_ain', type: 'heavy' },
-  { pattern: 'ġ', sound: '19_ghain', type: 'heavy' },
-  { pattern: 'f', sound: '20_faa', type: 'letter' },
-  { pattern: 'q', sound: '21_qaaf', type: 'qalqalah' },
-  { pattern: 'k', sound: '22_kaaf', type: 'letter' },
-  { pattern: 'l', sound: '23_laam', type: 'letter' },
-  { pattern: 'm', sound: '24_meem', type: 'ghunnah' },
-  { pattern: 'n', sound: '25_noon', type: 'ghunnah' },
-  { pattern: 'h', sound: '26_haah', type: 'letter' },
-  { pattern: 'w', sound: '27_waw', type: 'letter' },
-  { pattern: 'y', sound: '30_yaa', type: 'letter' },
-];
-
-const TAJWEED_COLORS = {
-  madd: 'text-[#2196F3]',
-  ghunnah: 'text-brand-olive',
-  qalqalah: 'text-brand-clay',
-  heavy: 'text-[#795548]',
-  letter: 'text-brand-clay',
-};
-
-/**
- * TajweedText component for interactive transliteration.
- * Makes every identified phonetic part a clickable sound link.
+ * Phonetic Integration - TajweedText
+ * Tokenizes DIN 31635 transliteration and links parts to audio assets.
  */
 export default function TajweedText({ transliteration }: { transliteration: string }) {
-  const playSound = (soundName: string) => {
-    // Audio path in /audio/tajweed/ as per project structure
-    const audio = new Audio(`/audio/tajweed/${soundName}.mp3`);
+  
+  /**
+   * Tokenizes the transliteration string into Consonant+Vowel units.
+   * Regex: /([b-zḥḏʿġšṣḍṭẓʾ][āīūaiu]?|')/gi
+   */
+  const tokenizeTransliteration = (text: string): string[] => {
+    // Regex identifies letters followed by optional vowels, or a hamzah (')
+    const regex = /([b-zḥḏʿġšṣḍṭẓʾ][āīūaiu]?|')/gi;
+    const tokens: string[] = [];
+    let match;
+    let lastIndex = 0;
+
+    while ((match = regex.exec(text)) !== null) {
+      // Add any non-matching characters before the current match as static text
+      if (match.index > lastIndex) {
+        tokens.push(text.substring(lastIndex, match.index));
+      }
+      tokens.push(match[0]);
+      lastIndex = regex.lastIndex;
+    }
+
+    // Add any trailing characters
+    if (lastIndex < text.length) {
+      tokens.push(text.substring(lastIndex));
+    }
+
+    return tokens;
+  };
+
+  /**
+   * Plays sound of a specific token from /audio/tajweed/
+   */
+  const playSound = (token: string) => {
+    const lowerToken = token.toLowerCase();
+    
+    // Check for special combined cases first (like 'la')
+    let filename = PHONETIC_INDEX[lowerToken];
+
+    // If no direct token match, lookup by primary consonant or character
+    if (!filename) {
+      // Pick first character of token as fallback for consonants+vowels
+      const firstChar = lowerToken.charAt(0);
+      filename = PHONETIC_INDEX[firstChar];
+    }
+
+    if (!filename) return;
+
+    const audioPath = `/audio/tajweed/${filename}`;
+    const audio = new Audio(audioPath);
     audio.play().catch(() => {
-      console.warn(`Phonetic sound not found: ${soundName}`);
+      console.warn(`Phonetic audio not found: ${audioPath}`);
     });
   };
 
-  // Sort patterns by length descending to ensure longer matches take precedence
-  const sortedPatterns = TAJWEED_RULES.map(r => r.pattern).sort((a, b) => b.length - a.length);
-  const regex = new RegExp(`(${sortedPatterns.map(p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
-
-  // Split transliteration into parts based on recognized patterns
-  const parts = transliteration.split(regex);
+  const tokens = tokenizeTransliteration(transliteration);
 
   return (
-    <span className="italic">
-      {parts.map((part, index) => {
-        const lowerPart = part.toLowerCase();
-        const rule = TAJWEED_RULES.find(r => r.pattern === lowerPart);
+    <span className="italic flex flex-wrap gap-x-0.5">
+      {tokens.map((token, index) => {
+        const lowerToken = token.toLowerCase();
+        
+        // Determine if token is interactive (exists in mapping)
+        const isInteractive = !!PHONETIC_INDEX[lowerToken] || !!PHONETIC_INDEX[lowerToken.charAt(0)];
 
-        if (rule) {
+        if (isInteractive) {
           return (
             <span
-              key={index}
+              key={`${token}-${index}`}
               onClick={(e) => {
-                e.stopPropagation(); // Avoid triggering parent WordToken analysis
-                playSound(rule.sound);
+                e.stopPropagation();
+                playSound(token);
               }}
-              className={`${TAJWEED_COLORS[rule.type]} cursor-pointer border-b border-dotted border-current hover:border-solid hover:bg-brand-clay/10 rounded px-0.5 transition-all`}
-              title={`${rule.type}: ${rule.pattern}`}
+              className="cursor-pointer hover:text-blue-500 border-b border-dotted border-brand-clay transition-all duration-200"
             >
-              {part}
+              {token}
             </span>
           );
         }
 
-        // Render separators or unknown parts as static text
-        return <React.Fragment key={index}>{part}</React.Fragment>;
+        // Static part (e.g., spaces, punctuation)
+        return <React.Fragment key={`${token}-${index}`}>{token}</React.Fragment>;
       })}
     </span>
   );

@@ -72,11 +72,19 @@
     - **Madd:** Lengthen the sequence by doubling the carrier letter or identifying Maddah symbols.
 - **Filenames:** Match the `1_alif` through `30_yaa` convention.
 
-## 10. Build-Step & Asset Management
+## 10. Phonetic Implementation Status (Integration)
+- **Tokenization:** Uses regex `/([b-zḥḏʿġšṣḍṭẓʾ][āīūaiu]?|')/gi` in `TajweedText.tsx` to split transliteration into phonetic units.
+- **Mapping:** `src/constants/phoneticMap.ts` (PHONETIC_INDEX) links DIN 31635 symbols to `/public/audio/tajweed/` assets.
+- **Interactive UI:** Each tokenized unit is clickable, triggers `playSound(token)`, and uses `hover:text-blue-500` and `border-b border-dotted border-brand-clay`.
+- **Phonetic Overlaps:**
+    - **Shadda:** Handled during Arabic-to-audio builder, but transliteration tokens do not yet explicitly double on click (they play the base consonant).
+    - **Madd:** Long vowels (`ā`, `ī`, `ū`) are correctly mapped to their respective long-vowel carriers.
+
+## 11. Build-Step & Asset Management
 - **Automation:** Use `scripts/download-makharij.js` (or manual ZIP) to populate `/public/audio/tajweed/`.
 - **Prebuild:** Ensure `package.json` includes `prebuild` scripts if assets are being fetched dynamically.
 
-## 11. Next.js 16.2+ & React 19 Protocols
+## 12. Next.js 16.2+ & React 19 Protocols
 - **Component Defaults:** Default to **Server Components**. Move `'use client'` to the lowest possible "leaf" components.
 - **Streaming:** Implement **Streaming with Suspense** for API-heavy data (e.g., Root Analysis).
 - **Data Fetching:** Use **Async Server Components**. Leverage native `fetch` caching. 
