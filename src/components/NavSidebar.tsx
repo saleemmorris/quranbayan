@@ -74,7 +74,7 @@ export default function NavSidebar({ isOpen, onClose }: NavSidebarProps) {
           </nav>
 
           <footer className="mt-auto border-t border-brand-border pt-6">
-            <p className="text-center text-xs text-foreground/40 font-medium">
+            <p className="text-center text-xs text-foreground/70 font-medium">
               © {new Date().getFullYear()} quranbayan.org
             </p>
           </footer>

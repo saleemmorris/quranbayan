@@ -70,7 +70,7 @@ export default async function SearchPage({
       </main>
 
       <footer className="mt-20 border-t border-brand-border/50 py-12 text-center">
-        <p className="text-sm font-medium text-foreground/30">
+        <p className="text-sm font-medium text-foreground/70">
           Powered by Quran.com API v4. Built for clarity and insight.
         </p>
       </footer>

@@ -143,13 +143,13 @@ export default function SearchBar({
             onFocus={() => setIsFocused(true)}
             placeholder={isFocused ? (isHeader ? "Search" : "") : shortPlaceholder} 
             className={`w-full rounded-full border border-brand-border bg-brand-card px-6 py-4 text-foreground shadow-sm focus:border-brand-clay focus:outline-none focus:ring-1 focus:ring-brand-clay transition-all pr-32 ${
-              isHeader && !isFocused ? 'py-2 px-4 pr-10 placeholder:text-transparent sm:placeholder:text-foreground/50' : ''
-            } ${isHeader && isFocused ? 'placeholder:text-transparent sm:placeholder:text-foreground/50' : ''} ${!isHeader && isFocused ? 'py-5 px-8' : ''}`}
+              isHeader && !isFocused ? 'py-2 px-4 pr-10 placeholder:text-transparent sm:placeholder:text-foreground/70' : ''
+            } ${isHeader && isFocused ? 'placeholder:text-transparent sm:placeholder:text-foreground/70' : ''} ${!isHeader && isFocused ? 'py-5 px-8' : ''}`}
           />
           {/* Animated scrolling placeholder for focused state */}
           {isFocused && query === "" && !isHeader && (
             <div className="pointer-events-none absolute inset-y-0 left-6 right-32 flex items-center overflow-hidden">
-              <span className="animate-marquee inline-block text-foreground/50 text-sm md:text-base">
+              <span className="animate-marquee inline-block text-foreground/70 text-sm md:text-base">
                 {fullPlaceholder}
               </span>
             </div>
@@ -188,7 +188,7 @@ export default function SearchBar({
                       {suggestion.title}
                     </span>
                     {suggestion.subtitle && (
-                      <span className="text-xs text-foreground/50">
+                      <span className="text-xs text-foreground/70">
                         {suggestion.subtitle}
                       </span>
                     )}

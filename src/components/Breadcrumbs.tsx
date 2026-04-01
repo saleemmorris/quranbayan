@@ -58,7 +58,7 @@ export default function Breadcrumbs() {
                 ) : (
                   <Link 
                     href={breadcrumb.href}
-                    className="text-foreground/50 transition-colors hover:text-brand-olive"
+                    className="text-foreground/70 transition-colors hover:text-brand-olive"
                   >
                     {breadcrumb.label}
                   </Link>

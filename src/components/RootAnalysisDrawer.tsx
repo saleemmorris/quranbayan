@@ -77,7 +77,7 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
       <div className="flex flex-wrap gap-2">
         {description.split(',').map((segment, idx) => {
           const trimmed = segment.trim();
-          let colorStyle = { color: 'rgba(0,0,0,0.6)', backgroundColor: 'rgba(0,0,0,0.05)', borderColor: 'transparent' };
+          let colorStyle = { color: 'rgba(0,0,0,0.8)', backgroundColor: 'rgba(0,0,0,0.05)', borderColor: 'transparent' };
           
           if (trimmed.toLowerCase().includes('noun')) {
             colorStyle = { color: '#3E4A2E', backgroundColor: 'rgba(62, 74, 46, 0.1)', borderColor: 'rgba(62, 74, 46, 0.2)' };
@@ -107,7 +107,7 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
     
     return (
       <div className="flex flex-col items-center gap-6 border-b border-brand-border/50 pb-8">
-        <span className="text-xs font-bold uppercase tracking-widest text-brand-clay/60">3-Letter Root</span>
+        <span className="text-xs font-bold uppercase tracking-widest text-brand-clay/80">3-Letter Root</span>
         <div className="flex gap-8" dir="rtl">
           {letters.map((letter, idx) => (
             <div key={idx} className="flex flex-col items-center gap-3">
@@ -155,7 +155,7 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
                 <span className="text-2xl font-semibold text-brand-clay italic">
                   <TajweedText transliteration={analysis.transliteration} />
                 </span>
-                <span className="text-sm font-bold uppercase tracking-widest text-foreground/40">
+                <span className="text-sm font-bold uppercase tracking-widest text-foreground/70">
                   Location {analysis.location}
                 </span>
               </div>
@@ -163,7 +163,7 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
 
             <div className="mt-16 space-y-12">
               <section>
-                <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-brand-olive/60">Grammar & Root</h3>
+                <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-brand-olive/80">Grammar & Root</h3>
                 <div className={`rounded-2xl border border-brand-border bg-brand-card/30 p-6 min-h-[160px] flex flex-col justify-center transition-all duration-300 ${loading ? 'animate-pulse bg-brand-border/10' : ''}`}>
                   {loading ? (
                     <div className="flex flex-col items-center justify-center gap-4">
@@ -174,7 +174,7 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
                     <div className="space-y-6">
                       {renderRootDisplay(wordInfo.root_modern)}
                       <div className="space-y-3">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-foreground/30">Linguistic Breakdown</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-foreground/70">Linguistic Breakdown</span>
                         {renderGrammarSegments(wordInfo.grammar_description)}
                       </div>
                     </div>
@@ -187,7 +187,7 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
               </section>
 
               <section>
-                <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-brand-olive/60">English Meaning</h3>
+                <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-brand-olive/80">English Meaning</h3>
                 <div className={`rounded-2xl border border-brand-border bg-brand-card/30 p-6 transition-all duration-300 ${loading ? 'animate-pulse bg-brand-border/10' : ''}`}>
                   {loading ? (
                     <div className="h-8 w-full bg-brand-border/20 rounded animate-shimmer" />

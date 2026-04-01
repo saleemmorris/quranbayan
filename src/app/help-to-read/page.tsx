@@ -45,7 +45,7 @@ export default function HelpToReadPage() {
               <strong>Long Vowels:</strong> Stretch these sounds for 4 to 6 counts. This occurs when a vowel is followed by a Madd letter (Alif, Waw, or Ya) with a Madd sign.
             </p>
             <div className="mt-8 rounded-xl bg-background p-4 text-center border border-brand-border">
-              <span className="text-xs font-bold uppercase tracking-widest text-foreground/40 block mb-2">Example</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-foreground/70 block mb-2">Example</span>
               <div className="text-xl font-medium">
                 <TajweedText transliteration="al-laḏīna āmanū" />
               </div>
@@ -62,7 +62,7 @@ export default function HelpToReadPage() {
               <strong>Nasalization:</strong> A vibrating sound produced through the nose. This happens on doubled <em>Meem</em> (mm) and <em>Noon</em> (nn).
             </p>
             <div className="mt-8 rounded-xl bg-background p-4 text-center border border-brand-border">
-              <span className="text-xs font-bold uppercase tracking-widest text-foreground/40 block mb-2">Example</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-foreground/70 block mb-2">Example</span>
               <div className="text-xl font-medium">
                 <TajweedText transliteration="innahuu" />
               </div>
@@ -79,7 +79,7 @@ export default function HelpToReadPage() {
               <strong>Echo Sound:</strong> A bouncing or echoing sound made when certain letters (q, t, b, j, d) appear with a Sukun or at the end of a word.
             </p>
             <div className="mt-8 rounded-xl bg-background p-4 text-center border border-brand-border">
-              <span className="text-xs font-bold uppercase tracking-widest text-foreground/40 block mb-2">Example</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-foreground/70 block mb-2">Example</span>
               <div className="text-xl font-medium">
                 <TajweedText transliteration="laqad" />
               </div>
@@ -103,7 +103,7 @@ export default function HelpToReadPage() {
       </main>
 
       <footer className="border-t border-brand-border py-12 text-center">
-        <p className="text-sm text-foreground/50">
+        <p className="text-sm text-foreground/70">
           © {new Date().getFullYear()} quranbayan.org. Built for clarity and accuracy.
         </p>
       </footer>

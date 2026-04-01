@@ -71,7 +71,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-brand-border py-8 text-center">
-        <p className="text-sm text-foreground/50">
+        <p className="text-sm text-foreground/70">
           © {new Date().getFullYear()} quranbayan.org. 
         </p>
       </footer>

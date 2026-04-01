@@ -34,7 +34,7 @@ export default function SurahCard({ number, arabicName, englishName, formalName 
             {formalName || englishName}
           </span>
           {formalName && (
-            <span className="text-foreground/50 text-xs transition-colors group-hover:text-foreground/70">
+            <span className="text-foreground/70 text-xs transition-colors group-hover:text-foreground/70">
               {englishName}
             </span>
           )}

@@ -57,7 +57,7 @@ export default async function AllSurahsPage() {
       </main>
 
       <footer className="border-t border-brand-border py-12 text-center">
-        <p className="text-sm text-foreground/50">
+        <p className="text-sm text-foreground/70">
           © {new Date().getFullYear()} quranbayan.org.
         </p>
       </footer>

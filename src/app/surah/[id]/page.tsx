@@ -109,7 +109,7 @@ export default async function SurahPage({ params }: { params: Promise<{ id: stri
       <SurahStudyView chapter={chapter} verses={verses} />
       
       <footer className="border-t border-brand-border/50 py-12 text-center bg-background">
-        <p className="text-sm font-medium text-foreground/30">
+        <p className="text-sm font-medium text-foreground/70">
           Built with clear word-by-word transliteration. Data from Quran.com API v4.
         </p>
       </footer>

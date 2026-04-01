@@ -109,11 +109,11 @@ export default function PronunciationGuidePage() {
                 </div>
                 <div className="mt-6 flex flex-col gap-1">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-widest text-foreground/40">Transliteration</span>
+                    <span className="text-xs font-bold uppercase tracking-widest text-foreground/70">Transliteration</span>
                     <span className="font-mono text-lg font-bold text-brand-clay">{item.transliteration}</span>
                   </div>
                   <div className="mt-4 border-t border-brand-border/50 pt-4">
-                    <span className="text-xs font-bold uppercase tracking-widest text-foreground/40 block mb-1">Makhraj</span>
+                    <span className="text-xs font-bold uppercase tracking-widest text-foreground/70 block mb-1">Makhraj</span>
                     <p className="text-sm text-foreground/70 leading-snug">{item.makhraj}</p>
                   </div>
                 </div>
@@ -124,7 +124,7 @@ export default function PronunciationGuidePage() {
       </main>
 
       <footer className="border-t border-brand-border py-12 text-center">
-        <p className="text-sm text-foreground/50">
+        <p className="text-sm text-foreground/70">
           © {new Date().getFullYear()} quranbayan.org. Learning the makharij of the Noble Quran.
         </p>
       </footer>
