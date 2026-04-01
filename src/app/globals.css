@@ -5,7 +5,7 @@
   --background: #f7f8f2;      /* Parchment/Off-white */
   --foreground: #2d3622;      /* Slightly darker Olive for better contrast */
   --color-olive: #3e4a2e;     /* Primary Olive */
-  --color-clay: #8b6d43;      /* Darker Tan for readability of small text */
+  --color-clay: #7a5c32;      /* Darker Tan for readability of small text (PASS 4.5:1) */
   --color-card: #ffffff;
   --color-border: #e2e4d8;
 }

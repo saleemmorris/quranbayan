@@ -130,7 +130,7 @@ export default function SearchBar({
       ref={searchRef} 
       className={`relative transition-all duration-500 ease-in-out z-50 ${
         isHeader 
-          ? (isFocused ? 'absolute inset-x-0 top-0 h-full bg-background flex items-center px-4 sm:px-6 lg:px-8' : 'w-auto') 
+          ? (isFocused ? 'fixed sm:absolute inset-x-0 top-0 h-16 sm:h-full bg-background sm:bg-transparent flex items-center px-4 sm:px-0 lg:px-0 border-b sm:border-b-0 border-brand-border' : 'w-auto') 
           : (isFocused ? 'fixed inset-x-0 top-0 h-24 bg-background/95 backdrop-blur-md flex items-center px-4 sm:px-6 lg:px-8 border-b border-brand-border' : 'w-full max-w-md')
       }`}
     >
