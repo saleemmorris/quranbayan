@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { X, Volume2 } from 'lucide-react';
 import TajweedText from './TajweedText';
 import WordAnalysis from './WordAnalysis';
-import { getWordAudioUrl } from '@/lib/audioUtils';
+import { getWordAudioUrl, getWordAudioFallbackUrl } from '@/lib/audioUtils';
 
 interface WordAnalysisData {
   word: string;
@@ -53,19 +53,28 @@ export default function RootAnalysisDrawer({ isOpen, onClose, analysis }: RootAn
       console.log('DEBUG: Clicking Word', { surah, ayah, wordIndex });
       
       const audioUrl = getWordAudioUrl(surah, ayah, wordIndex);
-      console.log('DEBUG: Generated Path ->', audioUrl);
+      const fallbackUrl = getWordAudioFallbackUrl(surah, ayah, wordIndex);
+      console.log('DEBUG: Primary Path ->', audioUrl);
       
       try {
         const audio = new Audio(audioUrl);
         
-        audio.addEventListener('error', (err) => {
-          console.error('DEBUG: Audio Error Object:', err.target && (err.target as any).error);
-          console.error(`Audio Load Failed: [${audioUrl}] - check path in /public/audio/words/`);
-          setAudioError(true);
+        audio.addEventListener('error', async () => {
+          console.warn(`CDN 404: [${audioUrl}]. Attempting fallback...`);
+          try {
+            const fallbackAudio = new Audio(fallbackUrl);
+            fallbackAudio.addEventListener('error', () => {
+              console.error(`Both CDN and Fallback failed for [${fallbackUrl}]`);
+              setAudioError(true);
+            });
+            await fallbackAudio.play();
+          } catch (err) {
+            setAudioError(true);
+          }
         });
 
         audio.addEventListener('canplaythrough', () => {
-          console.log('DEBUG: Audio buffered and ready.');
+          console.log('DEBUG: Primary Audio buffered and ready.');
         });
 
         await audio.play();

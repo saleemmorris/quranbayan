@@ -128,3 +128,9 @@
 - **Data Fetching:** Use **Async Server Components**. Leverage native `fetch` caching. 
 - **Asset Preloading:** Preload critical Tajweed MP3s in `layout.tsx` via `<link rel="preload">`.
 - **RTL Standards:** Use Tailwind 4.0 Logical Properties exclusively.
+
+## 18. External CDN & Fallback
+- **Primary:** Word-level audio is served via GitHub Pages CDN: `https://quranbayan.github.io/quran-audio-cdn/`.
+- **Fallback:** If the CDN returns a 404, the application attempts to fetch from `https://audio.quran.com/v2/word/`.
+- **Performance:** Preconnect to `https://quranbayan.github.io` is implemented in `layout.tsx`.
+- **Asset Management:** `public/audio/words/` is now deprecated in favor of the CDN.
