@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { getWordAudioUrl } from '@/lib/audioUtils';
+import { Search, Volume2, CheckCircle2, XCircle } from 'lucide-react';
 
 const DEBUG_WORDS = [
-  { id: '001_001_001', text: 'بِسْمِ', transliteration: "bis'mi", path: '/audio/words/001_001_001.mp3' },
-  { id: '001_001_002', text: 'اللَّهِ', transliteration: 'l-lahi', path: '/audio/words/001_001_002.mp3' },
-  { id: '001_001_003', text: 'الرَّحْمَنِ', transliteration: 'l-raḥmāni', path: '/audio/words/001_001_003.mp3' },
-  { id: '001_001_004', text: 'الرَّحِيمِ', transliteration: 'l-raḥīmi', path: '/audio/words/001_001_004.mp3' },
-  { id: '001_002_001', text: 'الْحَمْدُ', transliteration: 'al-ḥamdu', path: '/audio/words/001_002_001.mp3' },
+  { surah: 1, ayah: 1, word: 1, text: 'بِسْمِ', transliteration: "bis'mi" },
+  { surah: 1, ayah: 1, word: 2, text: 'اللَّهِ', transliteration: 'l-lahi' },
+  { surah: 1, ayah: 1, word: 3, text: 'الرَّحْمَنِ', transliteration: 'l-raḥmāni' },
+  { surah: 1, ayah: 1, word: 4, text: 'الرَّحِيمِ', transliteration: 'l-raḥīmi' },
+  { surah: 1, ayah: 2, word: 1, text: 'الْحَمْدُ', transliteration: 'al-ḥamdu' },
 ];
 
 export default function DebugAudioPage() {
@@ -87,68 +89,82 @@ export default function DebugAudioPage() {
         <div className="flex items-center space-x-4">
           <span>User Activation:</span>
           {userActivation ? (
-            <span className="text-green-600 font-bold">ACTIVE (✓)</span>
+            <span className="text-green-600 font-bold flex items-center gap-1">
+              <CheckCircle2 size={18} /> ACTIVE
+            </span>
           ) : (
-            <span className="text-red-600 font-bold">INACTIVE (X)</span>
+            <span className="text-red-600 font-bold flex items-center gap-1">
+              <XCircle size={18} /> INACTIVE
+            </span>
           )}
           <span className="text-xs text-gray-500">(Click anywhere to activate)</span>
         </div>
       </div>
 
       <div className="space-y-4">
-        {DEBUG_WORDS.map((word) => (
-          <div key={word.id} className="bg-white dark:bg-[#25291C] p-6 rounded-xl border border-[#E2E4D8] dark:border-[#323828] shadow-sm">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div className="space-y-1">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl font-amiri font-bold">{word.text}</span>
-                  <span className="text-sm text-[#7A5C33] dark:text-[#E5D3B3]">{word.transliteration}</span>
+        {DEBUG_WORDS.map((word) => {
+          const path = getWordAudioUrl(word.surah, word.ayah, word.word);
+          const id = `${word.surah}_${word.ayah}_${word.word}`;
+          
+          return (
+            <div key={id} className="bg-white dark:bg-[#25291C] p-6 rounded-xl border border-[#E2E4D8] dark:border-[#323828] shadow-sm">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl font-amiri font-bold">{word.text}</span>
+                    <span className="text-sm text-[#7A5C33] dark:text-[#E5D3B3] italic">{word.transliteration}</span>
+                  </div>
+                  <div className="text-xs font-mono bg-gray-100 dark:bg-black/20 p-2 rounded border border-black/5 overflow-x-auto">
+                    {path}
+                  </div>
                 </div>
-                <div className="text-xs font-mono bg-gray-100 dark:bg-black/20 p-1 rounded">
-                  {word.path}
-                </div>
-              </div>
 
-              <div className="flex flex-wrap gap-2 items-center">
-                <button
-                  onClick={() => testPath(word.id, word.path)}
-                  className="px-4 py-2 bg-[#3E4A2E] text-white rounded hover:bg-[#3E4A2E]/90 transition-colors text-sm"
-                >
-                  Test Path
-                </button>
-                <button
-                  onClick={() => forcePlay(word.id, word.path)}
-                  className="px-4 py-2 bg-[#7A5C33] text-white rounded hover:bg-[#7A5C33]/90 transition-colors text-sm"
-                >
-                  Force Play
-                </button>
+                <div className="flex flex-wrap gap-2 items-center">
+                  <button
+                    onClick={() => testPath(id, path)}
+                    className="flex items-center gap-2 px-4 py-2 bg-[#3E4A2E] text-white rounded hover:bg-[#3E4A2E]/90 transition-colors text-sm font-medium"
+                  >
+                    <Search size={16} /> Test Path
+                  </button>
+                  <button
+                    onClick={() => forcePlay(id, path)}
+                    className="flex items-center gap-2 px-4 py-2 bg-[#7A5C33] text-white rounded hover:bg-[#7A5C33]/90 transition-colors text-sm font-medium"
+                  >
+                    <Volume2 size={16} /> Force Play
+                  </button>
 
-                <div className="flex items-center ml-4 space-x-2">
-                  {results[word.id]?.status === 200 && (
-                    <span className="text-green-600 font-bold" title="Status 200 OK">✓ Found</span>
-                  )}
-                  {results[word.id]?.status && results[word.id]?.status !== 200 && (
-                    <span className="text-red-600 font-bold" title={`Status ${results[word.id].status}`}>
-                      X (Status: {results[word.id].status})
-                    </span>
-                  )}
-                  {results[word.id]?.error && (
-                    <div className="text-red-500 text-xs max-w-[200px] truncate" title={results[word.id].error}>
-                      Error: {results[word.id].error}
-                    </div>
-                  )}
-                  {results[word.id]?.playing && (
-                    <span className="animate-pulse text-blue-500">🔊 Playing...</span>
-                  )}
+                  <div className="flex items-center ml-2 space-x-2 min-w-[100px]">
+                    {results[id]?.status === 200 && (
+                      <span className="text-green-600 font-bold flex items-center gap-1" title="Status 200 OK">
+                        <CheckCircle2 size={18} /> Found
+                      </span>
+                    )}
+                    {results[id]?.status && results[id]?.status !== 200 && (
+                      <span className="text-red-600 font-bold flex items-center gap-1" title={`Status ${results[id].status}`}>
+                        <XCircle size={18} /> Error {results[id].status}
+                      </span>
+                    )}
+                    {results[id]?.error && (
+                      <div className="text-red-500 text-xs max-w-[150px] truncate" title={results[id].error}>
+                        Error: {results[id].error}
+                      </div>
+                    )}
+                    {results[id]?.playing && (
+                      <span className="animate-pulse text-blue-500 flex items-center gap-1">
+                        <Volume2 size={18} className="animate-bounce" /> Playing...
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      <footer className="text-sm text-[#7A5C33] dark:text-[#E5D3B3] border-t border-[#E2E4D8] dark:border-[#323828] pt-4">
-        <p>Results are also printed to the browser console with "DEBUG_AUDIO:" prefix.</p>
+      <footer className="text-sm text-[#7A5C33] dark:text-[#E5D3B3] border-t border-[#E2E4D8] dark:border-[#323828] pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p>Console Logs: Press <kbd className="bg-gray-100 dark:bg-black/30 px-1 rounded">F12</kbd> or <kbd className="bg-gray-100 dark:bg-black/30 px-1 rounded">Ctrl+Shift+I</kbd></p>
+        <p className="font-mono text-xs opacity-50">v1.0.1 | develop branch</p>
       </footer>
     </div>
   );
